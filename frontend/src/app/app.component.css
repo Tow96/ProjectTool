@@ -1,0 +1,22 @@
+.app{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.content__list {
+  height: 100%;
+  padding: 0;
+  width: 80%;
+}
+
+.content__list__viewport {
+  height: 100%;
+}

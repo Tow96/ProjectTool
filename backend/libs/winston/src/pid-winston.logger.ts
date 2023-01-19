@@ -1,0 +1,84 @@
+/** winston.logger.ts
+ * Copyright (c) 2022, Towechlabs
+ *
+ * Logger class that adds writing logs with pid and custom format
+ */
+import { Logger } from '@nestjs/common';
+import 'winston-daily-rotate-file';
+import * as winston from 'winston';
+
+export class PidWinstonLogger extends Logger {
+  static logsFolder = `${__dirname}/../logs`;
+  private pid = '';
+
+  setPid(pid: string): void {
+    this.pid = pid;
+  }
+
+  pidError(message: string, stack?: string, context?: string) {
+    return this.error({ pid: this.pid, message }, stack, context);
+  }
+
+  pidWarn(message: string, ...optionalParams: any[]) {
+    return this.warn({ pid: this.pid, message }, optionalParams);
+  }
+
+  pidLog(message: string, ...optionalParams: any[]) {
+    return this.log({ pid: this.pid, message }, optionalParams);
+  }
+
+  pidVerbose(message: string, ...optionalParams: any[]) {
+    return this.verbose({ pid: this.pid, message }, optionalParams);
+  }
+
+  pidDebug(message: string, ...optionalParams: any[]) {
+    return this.debug({ pid: this.pid, message }, optionalParams);
+  }
+
+  private static format(): winston.Logform.Format {
+    return winston.format.combine(
+      winston.format.timestamp({ format: 'YYYY/MM/DD HH:mm:ss' }),
+      winston.format.printf(
+        (info) =>
+          `${info.timestamp}${info.pid ? ' {pid: ' + info.pid + '}' : ''} [${process.env.NAME}] ${
+            info.level
+          }: ${info.message}`,
+      ),
+    );
+  }
+
+  static transports(): winston.transport[] {
+    const silent = process.env.DISABLE_LOGGING.toLowerCase() === 'true';
+
+    const consoleTransport = new winston.transports.Console({
+      level: 'silly',
+      format: winston.format.combine(
+        winston.format.colorize({ all: true }),
+        PidWinstonLogger.format(),
+      ),
+    });
+
+    if (silent) return [consoleTransport];
+
+    // The transports are declared after, so the file are not created if not needed
+    const errorLogTransport = new winston.transports.DailyRotateFile({
+      level: 'warn',
+      maxFiles: '30d',
+      filename: `${PidWinstonLogger.logsFolder}/error_%DATE%.log`,
+      datePattern: 'YYYYMMDD',
+      format: PidWinstonLogger.format(),
+      zippedArchive: true,
+    });
+
+    const combinedLogTransport = new winston.transports.DailyRotateFile({
+      level: 'verbose',
+      maxFiles: '30d',
+      filename: `${PidWinstonLogger.logsFolder}/combined_%DATE%.log`,
+      datePattern: 'YYYYMMDD',
+      format: PidWinstonLogger.format(),
+      zippedArchive: true,
+    });
+
+    return [combinedLogTransport, errorLogTransport, combinedLogTransport];
+  }
+}

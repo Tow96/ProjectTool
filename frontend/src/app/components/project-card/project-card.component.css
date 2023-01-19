@@ -1,0 +1,23 @@
+.list-card {
+  margin-bottom: 1rem;
+}
+
+.projectCard__Status {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  flex-grow: 1;
+}
+
+.projectCard__Expand {
+  align-self: center;
+  margin: 0 0 0 .5rem;
+}
+
+.list-card__justHeader {
+  line-height: 2.3;
+}
+
+.list-card__form__element {
+  width: 100%;
+}
