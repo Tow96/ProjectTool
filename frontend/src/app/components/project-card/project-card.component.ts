@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Project } from 'src/app/core/models';
 import ProjectStatus from 'src/app/core/constants/project-status';
+import { Store } from '@ngrx/store';
+import ProjectActions from 'src/app/core/store';
 
 @Component({
   selector: 'app-project-card',
@@ -14,7 +16,7 @@ export class ProjectCardComponent implements OnInit {
   detailsVisible = false;
   projectForm: FormGroup;
 
-  constructor(private readonly fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder, private readonly store: Store) {
     this.projectForm = this.fb.group({});
   }
 
@@ -56,7 +58,14 @@ export class ProjectCardComponent implements OnInit {
   }
 
   onProjectFormSubmit() {
-    console.log(this.projectForm.value);
-    // this.toggleDetails();
+    if (this.projectForm.invalid) return;
+
+    if (this.isUnregistered()) {
+      this.store.dispatch(
+        ProjectActions.EffectActions.createProject(this.projectForm.value)
+      );
+    } else {
+      console.log('TODO');
+    }
   }
 }

@@ -15,5 +15,6 @@ export const EffectActions = createActionGroup({
   source: 'Projects-Effects',
   events: {
     'Load Projects': emptyProps(),
+    'Create Project': props<{ payload: Partial<Project> }>(),
   },
 });
