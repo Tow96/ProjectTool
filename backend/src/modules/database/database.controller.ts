@@ -1,10 +1,11 @@
 // Libraries
 import { LogIdRequest } from '@app/winston';
-import { Body, Controller, Inject, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Inject, Param, Post, Put, Req } from '@nestjs/common';
 import { Get } from '@nestjs/common/decorators';
+import { DeleteResult } from 'typeorm';
 
 // Dto
-import { CreateProjectDto } from './dto';
+import { CreateProjectDto, EditProjectDto } from './dto';
 
 // Models
 import { ProjectOutput } from './models';
@@ -27,5 +28,19 @@ export class DatabaseController {
   @Get()
   async getProjects(@Req() req: LogIdRequest): Promise<ProjectOutput[]> {
     return this.projectRepo.getAllProjects(req['x-log-id']);
+  }
+
+  @Put(':id')
+  async updateProject(
+    @Req() req: LogIdRequest,
+    @Param('id') id: string,
+    @Body() project: EditProjectDto,
+  ): Promise<ProjectOutput> {
+    return this.projectRepo.updateProject(req['x-log-id'], id, project);
+  }
+
+  @Delete(':id')
+  async deleteProject(@Req() req: LogIdRequest, @Param('id') id: string): Promise<DeleteResult> {
+    return this.projectRepo.deleteProject(req['x-log-id'], id);
   }
 }

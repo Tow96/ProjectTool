@@ -45,6 +45,8 @@ export class ArchivingService {
     this.logger.pidLog(`Creating zip file`);
     const zip = new AdmZip();
     zip.addLocalFolder(origin);
+    // TODO: Set editable ignore folders
+    zip.deleteFile('node_modules/');
     zip.writeZip(destination);
 
     await this.projects.updateLastArchived(project_id);

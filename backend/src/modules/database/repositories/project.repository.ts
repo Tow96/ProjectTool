@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs';
-import { Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 // Models
 import { HttpStatus } from '@nestjs/common/enums';
@@ -14,7 +14,7 @@ import { ConfigService } from '@nestjs/config';
 import { Project } from '../entities';
 
 // dto
-import { CreateProjectDto } from '../dto';
+import { CreateProjectDto, EditProjectDto } from '../dto';
 
 // Models
 import { ProjectOutput } from '../models';
@@ -36,6 +36,13 @@ export class ProjectRepository {
   ) {
     this.HOT_FOLDER = this.configService.get<string>('HOT_FOLDER');
     this.COLD_FOLDER = this.configService.get<string>('COLD_FOLDER');
+  }
+
+  private convertToOutput(input: Project): ProjectOutput {
+    return {
+      ...input,
+      status: this.getProjectStatus(input.location),
+    };
   }
 
   private getProjectStatus(location: string): number {
@@ -78,12 +85,30 @@ export class ProjectRepository {
     const createdProject = await this.projectRepo.save({ ...preProject, createdOn: new Date() });
     this.logger.pidLog(`Created project: ${createdProject.name} with id: ${createdProject.id}`);
 
-    const output: ProjectOutput = {
-      ...createdProject,
-      status,
-    };
+    const output = this.convertToOutput(createdProject);
 
     return output;
+  }
+
+  async deleteProject(pid: string, id: string): Promise<DeleteResult> {
+    // For data safety purposes, only the project is deleted, not the folders
+    this.logger.setPid(pid);
+
+    this.logger.pidLog(`Removing project_id: ${id}`);
+
+    const deletion = await this.projectRepo.delete({ id: parseInt(id) || -1 });
+
+    switch (deletion.affected) {
+      case 0:
+        this.logger.pidLog(`Project_id ${id} not found`);
+        break;
+      case 1:
+        this.logger.pidLog(`Project_id: ${id} deleted`);
+        break;
+      default:
+        this.logger.pidError(`More than one project was deleted`);
+    }
+    return deletion;
   }
 
   async getAllProjects(pid: string): Promise<ProjectOutput[]> {
@@ -99,7 +124,7 @@ export class ProjectRepository {
     // Goes through each project to get its status
     // TODO: Set Last Modified
     dbProjects.forEach((project) => {
-      output.push({ ...project, status: this.getProjectStatus(project.location) });
+      output.push(this.convertToOutput(project));
     });
 
     this.logger.pidLog('Fetching unregistered projects');
@@ -152,5 +177,37 @@ export class ProjectRepository {
 
   updateLastArchived(id: number): Promise<UpdateResult> {
     return this.projectRepo.update(id, { lastArchived: new Date() });
+  }
+
+  async updateProject(pid: string, id: string, project: EditProjectDto): Promise<ProjectOutput> {
+    this.logger.setPid(pid);
+
+    this.logger.pidLog(`Updating project with id: ${id}`);
+    const original = await this.getById(parseInt(id) || -1);
+    if (original === null) {
+      const message = `ProjectId: ${id} not found`;
+      this.logger.pidLog(message);
+      throw new HttpException(message, HttpStatus.NOT_FOUND);
+    }
+
+    // This ensures only certain fields are updatable
+    const changes: any = {};
+    if (project.name && project.name !== original.name) changes.name = project.name;
+    if (project.description && project.description !== original.description)
+      changes.description = project.description;
+
+    if (Object.keys(changes).length === 0) {
+      this.logger.pidLog('No changes necessary');
+      return this.convertToOutput(original);
+    }
+
+    const updatedProject = await this.projectRepo.save({
+      ...original,
+      ...changes,
+    });
+
+    this.logger.pidLog(`Project ${id} updated`);
+
+    return updatedProject;
   }
 }
