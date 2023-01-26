@@ -1,14 +1,20 @@
-import ProjectReducer from './project.reducer';
-import ProjectState, { ProjectStore } from './project.state';
-import * as ProjectActions from './project.actions';
-import * as ProjectSelectors from './project.selectors';
-import ProjectEffects from './project.effects';
+import { isDevMode } from '@angular/core';
+import {
+  ActionReducer,
+  ActionReducerMap,
+  createFeatureSelector,
+  createSelector,
+  MetaReducer
+} from '@ngrx/store';
 
-export default ProjectActions;
-export {
-  ProjectState,
-  ProjectStore,
-  ProjectReducer,
-  ProjectEffects,
-  ProjectSelectors,
+
+export interface AppState {
+
+}
+
+export const reducers: ActionReducerMap<AppState> = {
+
 };
+
+
+export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : [];

@@ -3,20 +3,27 @@ import { NgModule, isDevMode } from '@angular/core';
 
 // Modules
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import NotificationModule from '../modules/notification';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
-import NotificationModule from './notification';
 
 // NGRX
-import { reducers, metaReducers } from './store';
+import { ProjectEffects, ProjectReducer, ProjectStore } from './store';
+
+// Services
+import { ApiService } from './services';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([]),
+    HttpClientModule,
+
+    // NGRX
+    StoreModule.forRoot({ [ProjectStore]: ProjectReducer }),
+    EffectsModule.forRoot([ProjectEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: !isDevMode(),
@@ -24,7 +31,10 @@ import { reducers, metaReducers } from './store';
       trace: false,
       //traceLimit: 75
     }),
+
+    // Local Modules
     NotificationModule,
   ],
+  providers: [ApiService],
 })
-export default class CoreModule {}
+export class CoreModule {}

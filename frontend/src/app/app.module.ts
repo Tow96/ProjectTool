@@ -3,20 +3,16 @@ import { NgModule } from '@angular/core';
 
 // Modules
 import { BrowserModule } from '@angular/platform-browser';
-import CoreModule from './core';
+import CoreModule from '@app/core';
 
 // Components
 import { AppComponent } from './app.component';
-
-// Services
-import { GlobalErrorHandler } from './modules/notification';
-import SharedModule from './shared';
-import { ProjectCardComponent } from './components/project-card/project-card.component';
+import { GlobalErrorHandler } from './core/notification/global.error-handler.guard';
 
 @NgModule({
-  declarations: [AppComponent, ProjectCardComponent],
-  imports: [CoreModule, SharedModule, BrowserModule],
-  providers: [GlobalErrorHandler],
+  declarations: [AppComponent],
+  imports: [CoreModule, BrowserModule],
+  providers: [GlobalErrorHandler], // This is not an error no matter what the lint says
   bootstrap: [AppComponent],
 })
 export class AppModule {}

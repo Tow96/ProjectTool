@@ -1,0 +1,27 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+<div mat-dialog-content>
+  <p>{{ message }}</p>
+</div>
+<div mat-dialog-actions *ngIf="!next">
+  <button
+    mat-flat-button
+    [mat-dialog-close]="closeStates.Exitted"
+    [color]="type"
+    cdkFocusInitial
+  >
+    OK
+  </button>
+</div>
+<div mat-dialog-actions *ngIf="next">
+  <button mat-flat-button [mat-dialog-close]="closeStates.Exitted">
+    Cancel
+  </button>
+  <button
+    mat-flat-button
+    [mat-dialog-close]="closeStates.Next"
+    [color]="type"
+    cdkFocusInitial
+  >
+    OK
+  </button>
+</div>

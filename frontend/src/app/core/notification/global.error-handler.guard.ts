@@ -1,11 +1,12 @@
 import { ErrorHandler, Injectable, Injector, Provider } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { NotificationComponent } from './notification.component';
+import NotificationComponent from './notification.component';
 
 @Injectable()
 class GlobalErrorHandlerService implements ErrorHandler {
   constructor(private readonly injector: Injector) {}
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   handleError(error: any): void {
     console.error(error);
 
