@@ -4,9 +4,9 @@
  * Code that starts the app
  */
 // Libraries
-import { PidWinstonLogger } from '@app/winston';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { PidWinstonLogger } from '@shared/logger';
 
 // Modules
 import { AppModule } from './app.module';

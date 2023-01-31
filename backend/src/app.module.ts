@@ -2,12 +2,12 @@
 import * as Joi from 'joi';
 import { Module } from '@nestjs/common';
 import { join } from 'path';
-
 // Modules
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { ArchivingModule } from './modules/archiving/archiving.module';
-import DatabaseModule from './modules/database';
+import ArchiveModule from '@app/archive';
+import ProjectModule from '@app/projects';
+import DatabaseModule from '@shared/database';
 
 @Module({
   imports: [
@@ -34,13 +34,13 @@ import DatabaseModule from './modules/database';
         COLD_FOLDER: Joi.string().required(),
       }),
     }),
-    DatabaseModule,
-    ArchivingModule,
-
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client'),
       exclude: ['api/*'],
     }),
+    DatabaseModule,
+    ProjectModule,
+    ArchiveModule,
   ],
 })
 export class AppModule {}

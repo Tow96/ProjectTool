@@ -1,13 +1,14 @@
-import { LogIdRequest } from '@app/winston';
+// Libraries
 import { Controller, Param, Post, Req } from '@nestjs/common';
-import { ArchivingService } from './archiving.service';
 import { HttpException } from '@nestjs/common/exceptions';
 import { HttpStatus } from '@nestjs/common/enums';
+import { LogIdRequest } from '@shared/logger';
+// Services
+import ArchiveService from './archive.service';
 
 @Controller('api/archive')
 export class ArchiveController {
-  constructor(private readonly archiveService: ArchivingService) {}
-
+  constructor(private readonly archiveService: ArchiveService) {}
   private parseId(id: string): number {
     const output = parseInt(id);
     if (isNaN(output)) throw new HttpException(`Invalid id`, HttpStatus.UNPROCESSABLE_ENTITY);

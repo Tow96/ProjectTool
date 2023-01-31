@@ -5,16 +5,5 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true
-  },
-  "projects": {
-    "winston": {
-      "type": "library",
-      "root": "libs/winston",
-      "entryFile": "index",
-      "sourceRoot": "libs/winston/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/winston/tsconfig.lib.json"
-      }
-    }
   }
 }

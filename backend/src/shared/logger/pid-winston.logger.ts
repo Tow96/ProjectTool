@@ -9,30 +9,25 @@ import * as winston from 'winston';
 
 export class PidWinstonLogger extends Logger {
   static logsFolder = `${__dirname}/../logs`;
-  private pid = '';
 
-  setPid(pid: string): void {
-    this.pid = pid;
+  pidError(pid: string, message: string, stack?: string, context?: string) {
+    return this.error({ pid, message }, stack, context);
   }
 
-  pidError(message: string, stack?: string, context?: string) {
-    return this.error({ pid: this.pid, message }, stack, context);
+  pidWarn(pid: string, message: string, ...optionalParams: any[]) {
+    return this.warn({ pid, message }, optionalParams);
   }
 
-  pidWarn(message: string, ...optionalParams: any[]) {
-    return this.warn({ pid: this.pid, message }, optionalParams);
+  pidLog(pid: string, message: string, ...optionalParams: any[]) {
+    return this.log({ pid, message }, optionalParams);
   }
 
-  pidLog(message: string, ...optionalParams: any[]) {
-    return this.log({ pid: this.pid, message }, optionalParams);
+  pidVerbose(pid: string, message: string, ...optionalParams: any[]) {
+    return this.verbose({ pid, message }, optionalParams);
   }
 
-  pidVerbose(message: string, ...optionalParams: any[]) {
-    return this.verbose({ pid: this.pid, message }, optionalParams);
-  }
-
-  pidDebug(message: string, ...optionalParams: any[]) {
-    return this.debug({ pid: this.pid, message }, optionalParams);
+  pidDebug(pid: string, message: string, ...optionalParams: any[]) {
+    return this.debug({ pid, message }, optionalParams);
   }
 
   private static format(): winston.Logform.Format {

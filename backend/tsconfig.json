@@ -18,12 +18,11 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/winston": [
-        "libs/winston/src"
-      ],
-      "@app/winston/*": [
-        "libs/winston/src/*"
-      ]
+      "@shared": ["src/shared"],
+      "@shared/logger": ["src/shared/logger"],
+      "@shared/database": ["src/shared/database"],
+      "@app/archive": ["src/modules/archive"],
+      "@app/projects": ["src/modules/project"]
     }
   }
 }

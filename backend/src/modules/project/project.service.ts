@@ -1,30 +1,18 @@
 // Libraries
-import { PidWinstonLogger } from '@app/winston';
-import { Injectable } from '@nestjs/common';
-import { HttpException } from '@nestjs/common/exceptions';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-
-// Models
-import { HttpStatus } from '@nestjs/common/enums';
-
+// Entities
+import { CreateProjectDto, EditProjectDto, Project, ProjectOutput } from './models';
 // Services
 import { ConfigService } from '@nestjs/config';
-import { Project } from '../entities';
-
-// dto
-import { CreateProjectDto, EditProjectDto } from '../dto';
-
-// Models
-import { ProjectOutput } from '../models';
-
+import { PidWinstonLogger } from '@shared/logger';
 // Constants
-import ProjectStatus from '../constants/status.enum';
+import ProjectStatus from './constants/status.enum';
 
-// TODO: i18n
 @Injectable()
-export class ProjectRepository {
+export default class ProjectService {
   private HOT_FOLDER: string;
   private COLD_FOLDER: string;
 
@@ -62,17 +50,16 @@ export class ProjectRepository {
   }
 
   async createProject(pid: string, project: CreateProjectDto): Promise<ProjectOutput> {
-    this.logger.setPid(pid);
-    this.logger.pidLog(`Creating project ${project.name} under location ${project.location}`);
+    this.logger.pidLog(pid, `Creating project ${project.name} under location ${project.location}`);
 
     // Location is the definining factor
-    this.logger.pidLog(`Checking that the location is not already registered`);
+    this.logger.pidLog(pid, `Checking that the location is not already registered`);
     const projectExists = await this.projectRepo.findBy({
       location: project.location,
     });
     if (projectExists.length > 0) {
       const message = `project on location ${project.location} already registered`;
-      this.logger.pidLog(message);
+      this.logger.pidLog(pid, message);
       throw new HttpException(message, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
@@ -83,7 +70,10 @@ export class ProjectRepository {
     // Inserts the project
     const preProject = this.projectRepo.create({ ...project, lastArchived });
     const createdProject = await this.projectRepo.save({ ...preProject, createdOn: new Date() });
-    this.logger.pidLog(`Created project: ${createdProject.name} with id: ${createdProject.id}`);
+    this.logger.pidLog(
+      pid,
+      `Created project: ${createdProject.name} with id: ${createdProject.id}`,
+    );
 
     const output = this.convertToOutput(createdProject);
 
@@ -92,43 +82,41 @@ export class ProjectRepository {
 
   async deleteProject(pid: string, id: string): Promise<DeleteResult> {
     // For data safety purposes, only the project is deleted, not the folders
-    this.logger.setPid(pid);
-
-    this.logger.pidLog(`Removing project_id: ${id}`);
+    this.logger.pidLog(pid, `Removing project_id: ${id}`);
 
     const deletion = await this.projectRepo.delete({ id: parseInt(id) || -1 });
 
     switch (deletion.affected) {
       case 0:
-        this.logger.pidLog(`Project_id ${id} not found`);
+        this.logger.pidLog(pid, `Project_id ${id} not found`);
         break;
       case 1:
-        this.logger.pidLog(`Project_id: ${id} deleted`);
+        this.logger.pidLog(pid, `Project_id: ${id} deleted`);
         break;
       default:
-        this.logger.pidError(`More than one project was deleted`);
+        this.logger.pidError(pid, `More than one project was deleted`);
     }
     return deletion;
   }
 
   async getAllProjects(pid: string): Promise<ProjectOutput[]> {
-    this.logger.setPid(pid);
-    this.logger.pidLog('Fetching all projects');
+    this.logger.pidLog(pid, 'Fetching all projects');
 
     const output: ProjectOutput[] = [];
 
     // Fetches the projects from the db
     const dbProjects = await this.projectRepo.find({});
 
-    this.logger.pidLog('Setting current status');
+    this.logger.pidLog(pid, 'Setting current status');
     // Goes through each project to get its status
     // TODO: Set Last Modified
     dbProjects.forEach((project) => {
       output.push(this.convertToOutput(project));
     });
 
-    this.logger.pidLog('Fetching unregistered projects');
-    // Also adds all the unregistered projects
+    this.logger.pidLog(pid, 'Fetching unregistered projects');
+    // Also adds all the unregistered projects with negative id's
+    let unregisteredId = -1;
     const hotDirectories = fs.readdirSync(this.HOT_FOLDER);
     const coldDirectories = fs.readdirSync(this.COLD_FOLDER).map((x) => x.split('.')[0]);
     hotDirectories.forEach((dir) => {
@@ -136,7 +124,7 @@ export class ProjectRepository {
 
       if (dirIndex === -1) {
         output.push({
-          id: -1,
+          id: unregisteredId,
           description: '',
           createdOn: new Date(),
           imageLocation: '',
@@ -146,6 +134,7 @@ export class ProjectRepository {
           tags: [],
           lastArchived: new Date(),
         });
+        unregisteredId--;
       }
     });
     coldDirectories.forEach((dir) => {
@@ -153,7 +142,7 @@ export class ProjectRepository {
 
       if (dirIndex === -1) {
         output.push({
-          id: -1,
+          id: unregisteredId,
           description: '',
           createdOn: new Date(),
           imageLocation: '',
@@ -163,6 +152,7 @@ export class ProjectRepository {
           tags: [],
           lastArchived: new Date(),
         });
+        unregisteredId--;
       }
     });
 
@@ -180,13 +170,11 @@ export class ProjectRepository {
   }
 
   async updateProject(pid: string, id: string, project: EditProjectDto): Promise<ProjectOutput> {
-    this.logger.setPid(pid);
-
-    this.logger.pidLog(`Updating project with id: ${id}`);
+    this.logger.pidLog(pid, `Updating project with id: ${id}`);
     const original = await this.getById(parseInt(id) || -1);
     if (original === null) {
       const message = `ProjectId: ${id} not found`;
-      this.logger.pidLog(message);
+      this.logger.pidLog(pid, message);
       throw new HttpException(message, HttpStatus.NOT_FOUND);
     }
 
@@ -197,7 +185,7 @@ export class ProjectRepository {
       changes.description = project.description;
 
     if (Object.keys(changes).length === 0) {
-      this.logger.pidLog('No changes necessary');
+      this.logger.pidLog(pid, 'No changes necessary');
       return this.convertToOutput(original);
     }
 
@@ -206,7 +194,7 @@ export class ProjectRepository {
       ...changes,
     });
 
-    this.logger.pidLog(`Project ${id} updated`);
+    this.logger.pidLog(pid, `Project ${id} updated`);
 
     return updatedProject;
   }
