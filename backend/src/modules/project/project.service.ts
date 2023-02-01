@@ -68,7 +68,13 @@ export default class ProjectService {
     // TODO: set last modified when hot/cool
 
     // Inserts the project
-    const preProject = this.projectRepo.create({ ...project, lastArchived });
+    const preProject = this.projectRepo.create({
+      name: project.name,
+      description: project.description,
+      tags: project.tags,
+      location: project.location,
+      lastArchived,
+    });
     const createdProject = await this.projectRepo.save({ ...preProject, createdOn: new Date() });
     this.logger.pidLog(
       pid,

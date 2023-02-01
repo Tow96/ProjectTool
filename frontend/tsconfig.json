@@ -22,7 +22,8 @@
     "lib": ["ES2022", "dom"],
     "paths": {
       "@app/core": ["src/app/core"],
-      "@app/shared": ["src/app/shared"]
+      "@app/shared": ["src/app/shared"],
+      "@app/project-viewer": ["src/app/modules/project-viewer"]
     }
   },
   "angularCompilerOptions": {

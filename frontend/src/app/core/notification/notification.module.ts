@@ -7,7 +7,7 @@ import NotificationComponent from './notification.component';
 // Services
 import NotificationService from './notification.service';
 import { EffectsModule } from '@ngrx/effects';
-import { NotificationEffects } from './effects/notification.effects';
+import { NotificationEffects } from './state/effects/notification.effects';
 
 @NgModule({
   declarations: [NotificationComponent],

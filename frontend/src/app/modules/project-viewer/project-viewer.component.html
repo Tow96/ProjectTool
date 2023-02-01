@@ -1,0 +1,11 @@
+<cdk-virtual-scroll-viewport
+  class="pls__work"
+  itemSize="1"
+  minBufferPx="1200"
+  maxBufferPx="1200"
+>
+  <app-project-card
+    *cdkVirtualFor="let id of vm$ | async"
+    [projectIn]="id"
+  ></app-project-card>
+</cdk-virtual-scroll-viewport>

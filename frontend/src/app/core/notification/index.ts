@@ -1,6 +1,6 @@
 import NotificationModule from './notification.module';
 import NotificationService from './notification.service';
-import * as NotificationActions from './actions';
+import * as NotificationActions from './state/actions';
 import * as NotificationModels from './models';
 
 export default NotificationModule;

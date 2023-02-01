@@ -1,0 +1,95 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <mat-card class="projectCard" *ngIf="vm.project as project">
+    <mat-card-header>
+      <mat-card-title
+        [ngClass]="{ 'list-card__justHeader': vm.isUnregistered }"
+      >
+        {{ vm.isUnregistered ? "/" + project.location : project.name }}
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="!vm.isUnregistered">
+        /{{ project.location }}
+      </mat-card-subtitle>
+      <div class="projectCard__Status">
+        {{ vm.decodedStatus }}
+      </div>
+      <button
+        mat-icon-button
+        class="projectCard__Expand"
+        aria-label="Expand"
+        (click)="onDetailsClick(project.id)"
+      >
+        <mat-icon *ngIf="!project.detailsVisible">expand_more</mat-icon>
+        <mat-icon *ngIf="project.detailsVisible">expand_less</mat-icon>
+      </button>
+    </mat-card-header>
+    <mat-card-content *ngIf="projectForm$ | async as projectForm">
+      <form
+        *ngIf="project.detailsVisible"
+        class="projectCard__form"
+        [formGroup]="projectForm"
+        (ngSubmit)="onProjectFormSubmit(projectForm, vm.isUnregistered)"
+      >
+        <div class="projectCard__form__Loading" *ngIf="project.loading">
+          <mat-spinner color="warn"></mat-spinner>
+        </div>
+        <table class="projectCard__form__element">
+          <tr>
+            <td>
+              <mat-form-field class="projectCard__form__element">
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="name" />
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="projectCard__form__element">
+                <mat-label>Location</mat-label>
+                <input matInput formControlName="location" />
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <mat-form-field class="projectCard__form__element">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+        <div class="projectCard__footer">
+          <div class="projectCard__footer__row">
+            <button mat-flat-button color="primary" type="submit">
+              {{ vm.isUnregistered ? "Create" : "Update" }}
+            </button>
+          </div>
+          <div class="projectCard__footer__row right">
+            <button
+              mat-flat-button
+              color="accent"
+              type="button"
+              class="thisbtn_shldbewhite"
+            >
+              <mat-icon>archive</mat-icon>
+              Archive
+            </button>
+            <button
+              mat-flat-button
+              color="accent"
+              type="button"
+              class="thisbtn_shldbewhite"
+            >
+              <mat-icon>unarchive</mat-icon>
+              Unarchive
+            </button>
+            <button
+              mat-flat-button
+              color="warn"
+              type="button"
+              *ngIf="!vm.isUnregistered"
+              (click)="onDeleteClick(project.id)"
+            >
+              <mat-icon>delete</mat-icon>
+              Delete
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

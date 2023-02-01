@@ -1,1 +1,9 @@
-<div>TODO</div>
+<div class="app" *ngIf="vm$ | async as vm">
+  <div class="app__loading" *ngIf="vm.loading">
+    <mat-spinner color="warn"></mat-spinner>
+  </div>
+  <mat-toolbar color="primary"></mat-toolbar>
+  <div class="mat-app-background content">
+    <app-project-viewer></app-project-viewer>
+  </div>
+</div>
