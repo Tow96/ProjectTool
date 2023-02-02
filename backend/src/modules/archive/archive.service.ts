@@ -17,7 +17,27 @@ export default class ArchiveService {
     private readonly projects: ProjectService,
   ) {}
 
-  async archiveProject(pid: string, project_id: number): Promise<string> {
+  private zipFolder(pid: string, zip: AdmZip, origin: string, folder: string) {
+    const ignoredFolders = this.config.get<string>('ZIP_IGNORE').split(',');
+    const folderContents = fs.readdirSync(`${origin}/${folder}`);
+    for (const index in folderContents) {
+      const content = folderContents[index];
+      const relativePath = `${folder}/${content}`;
+
+      if (ignoredFolders.includes(content)) {
+        this.logger.pidLog(pid, `Skipping ${relativePath}`);
+        continue;
+      }
+
+      if (fs.lstatSync(`${origin}/${relativePath}`).isDirectory()) {
+        this.zipFolder(pid, zip, origin, relativePath);
+      } else {
+        zip.addLocalFile(`${origin}/${relativePath}`, `${folder}`);
+      }
+    }
+  }
+
+  async archiveProject(pid: string, project_id: number): Promise<number> {
     this.logger.pidLog(pid, `Archiving project with id: ${project_id}`);
     const project = await this.projects.getById(project_id);
     if (!project) {
@@ -38,20 +58,18 @@ export default class ArchiveService {
 
     this.logger.pidLog(pid, `Creating zip file`);
     const zip = new AdmZip();
-    zip.addLocalFolder(origin);
-    // TODO: Set editable ignore folders
-    zip.deleteFile('node_modules/');
+    this.zipFolder(pid, zip, `${this.config.get<string>('HOT_FOLDER')}`, project.location);
+
+    this.logger.pidLog(pid, `Writing zip file`);
     zip.writeZip(destination);
 
-    await this.projects.updateLastArchived(project_id);
-    fs.rmSync(origin, { recursive: true });
+    this.logger.pidLog(pid, `Removing folder`);
+    fs.rmdirSync(origin, { recursive: true });
 
-    const message = `Archived project ${project_id} successfully`;
-    this.logger.pidLog(pid, message);
-    return message;
+    return this.projects.getProjectStatus(project.location);
   }
 
-  async unarchiveProject(pid: string, project_id: number): Promise<string> {
+  async unarchiveProject(pid: string, project_id: number): Promise<number> {
     this.logger.pidLog(pid, `Unarchiving project with id: ${project_id}`);
     const project = await this.projects.getById(project_id);
     if (!project) {
@@ -61,14 +79,15 @@ export default class ArchiveService {
     }
 
     const origin = `${this.config.get<string>('COLD_FOLDER')}/${project.location}.zip`;
-    const destination = `${this.config.get<string>('HOT_FOLDER')}/${project.location}`;
+    const destination = `${this.config.get<string>('HOT_FOLDER')}`;
 
     this.logger.pidLog(pid, `Unzipping project`);
     const zip = new AdmZip(origin);
     zip.extractAllTo(destination, true);
 
-    const message = `Unzipped project ${project_id} successfully`;
-    this.logger.pidLog(pid, message);
-    return message;
+    this.logger.pidLog(pid, `Unzipped project ${project_id} successfully`);
+    const newStatus = this.projects.getProjectStatus(project.location);
+
+    return newStatus;
   }
 }

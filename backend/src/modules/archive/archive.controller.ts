@@ -21,7 +21,7 @@ export class ArchiveController {
     const parsedId = this.parseId(id);
     const result = await this.archiveService.archiveProject(req['x-log-id'], parsedId);
 
-    return { message: result };
+    return { status: result };
   }
 
   @Post('/out/:id')
@@ -29,6 +29,6 @@ export class ArchiveController {
     const parsedId = this.parseId(id);
     const result = await this.archiveService.unarchiveProject(req['x-log-id'], parsedId);
 
-    return { message: result };
+    return { status: result };
   }
 }

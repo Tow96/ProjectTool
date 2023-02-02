@@ -33,22 +33,6 @@ export default class ProjectService {
     };
   }
 
-  private getProjectStatus(location: string): number {
-    const hotDirectories = fs.readdirSync(this.HOT_FOLDER);
-    const coldDirectories = fs.readdirSync(this.COLD_FOLDER).map((x) => x.split('.')[0]);
-
-    switch (true) {
-      case hotDirectories.includes(location) && !coldDirectories.includes(location):
-        return ProjectStatus.HOT;
-      case hotDirectories.includes(location) && coldDirectories.includes(location):
-        return ProjectStatus.COOL;
-      case !hotDirectories.includes(location) && coldDirectories.includes(location):
-        return ProjectStatus.COLD;
-      case !hotDirectories.includes(location) && !coldDirectories.includes(location):
-        return ProjectStatus.LOST;
-    }
-  }
-
   async createProject(pid: string, project: CreateProjectDto): Promise<ProjectOutput> {
     this.logger.pidLog(pid, `Creating project ${project.name} under location ${project.location}`);
 
@@ -169,6 +153,22 @@ export default class ProjectService {
 
   getById(id: number): Promise<Project> {
     return this.projectRepo.findOne({ where: { id } });
+  }
+
+  getProjectStatus(location: string): number {
+    const hotDirectories = fs.readdirSync(this.HOT_FOLDER);
+    const coldDirectories = fs.readdirSync(this.COLD_FOLDER).map((x) => x.split('.')[0]);
+
+    switch (true) {
+      case hotDirectories.includes(location) && !coldDirectories.includes(location):
+        return ProjectStatus.HOT;
+      case hotDirectories.includes(location) && coldDirectories.includes(location):
+        return ProjectStatus.COOL;
+      case !hotDirectories.includes(location) && coldDirectories.includes(location):
+        return ProjectStatus.COLD;
+      case !hotDirectories.includes(location) && !coldDirectories.includes(location):
+        return ProjectStatus.LOST;
+    }
   }
 
   updateLastArchived(id: number): Promise<UpdateResult> {
