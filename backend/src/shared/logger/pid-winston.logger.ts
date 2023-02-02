@@ -74,6 +74,6 @@ export class PidWinstonLogger extends Logger {
       zippedArchive: true,
     });
 
-    return [combinedLogTransport, errorLogTransport, combinedLogTransport];
+    return [consoleTransport, errorLogTransport, combinedLogTransport];
   }
 }

@@ -30,8 +30,8 @@ import DatabaseModule from '@shared/database';
         DB_SYNC: Joi.boolean().default(true),
 
         // Folders
-        HOT_FOLDER: Joi.string().required(),
-        COLD_FOLDER: Joi.string().required(),
+        HOT_FOLDER: Joi.string().default('/media/hot'),
+        COLD_FOLDER: Joi.string().default('/media/cold'),
       }),
     }),
     ServeStaticModule.forRoot({
