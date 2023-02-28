@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /client
+/public
 /node_modules
 
 *.env
