@@ -36,15 +36,17 @@ export class PidWinstonLogger extends Logger {
       winston.format.printf(
         (info) =>
           `${info.timestamp}${info.pid ? ' {pid: ' + info.pid + '}' : ''} [${
-            process.env.NAME
+            process.env.NAME || 'UNNAMED APP'
           }] ${info.level}: ${info.message}`
       )
     );
   }
 
   static transports(): winston.transport[] {
-    console.log(process.env.DISABLE_LOGGING.toLowerCase());
-    const silent = process.env.DISABLE_LOGGING.toLowerCase() === 'true';
+    const silent =
+      process.env.DISABLE_LOGGING === undefined
+        ? false
+        : process.env.DISABLE_LOGGING.toLowerCase() === 'true';
 
     const consoleTransport = new winston.transports.Console({
       level: 'silly',
