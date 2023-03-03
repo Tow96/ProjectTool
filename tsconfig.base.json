@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@pt/logger": ["libs/logger/src/index.ts"]
+      "@pt/logger": ["libs/logger/src/index.ts"],
+      "@pt/pipes": ["libs/pipes/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
