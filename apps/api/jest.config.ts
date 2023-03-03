@@ -8,4 +8,7 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/api',
+  collectCoverage: true,
+  collectCoverageFrom: ['**/*.(t|j)s'],
+  coveragePathIgnorePatterns: ['jest.config.ts', '.module.ts'],
 };
