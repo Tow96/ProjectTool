@@ -1,18 +1,18 @@
 // Libraries
 import { Module } from '@nestjs/common';
 // Modules
-// import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 // Entities
-// import { Project } from './models';
+import { Project } from '@pt/models';
 // Controllers
 import { ProjectsController } from './projects.controller';
 // Services
+import { PidWinstonLogger } from '@pt/logger';
+import ProjectService from './projects.service';
 
 @Module({
-  imports: [
-    // TypeOrmModule.forFeature([Project])
-  ],
+  imports: [TypeOrmModule.forFeature([Project])],
   controllers: [ProjectsController],
-  // providers: [ProjectService],
+  providers: [ProjectService, PidWinstonLogger],
 })
 export class ProjectsModule {}

@@ -7,5 +7,8 @@ export default {
     '^.+\\.[tj]sx?$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  collectCoverage: true,
+  collectCoverageFrom: ['**/*.(t|j)s'],
   coverageDirectory: '../../coverage/libs/models',
+  coveragePathIgnorePatterns: ['jest.config.ts', '.module.ts'],
 };
