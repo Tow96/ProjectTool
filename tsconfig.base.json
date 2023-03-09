@@ -15,7 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@pt/image": ["libs/image/src/index.ts"],
       "@pt/logger": ["libs/logger/src/index.ts"],
+      "@pt/logger/mocks": ["libs/logger/mocks/index.ts"],
       "@pt/models": ["libs/models/src/index.ts"],
       "@pt/pipes": ["libs/pipes/src/index.ts"]
     }

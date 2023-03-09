@@ -3,12 +3,10 @@ import {
   Body,
   Controller,
   Inject,
-  Get,
   Post,
   Req,
   UseInterceptors,
   UploadedFile,
-  UploadedFiles,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -16,14 +14,12 @@ import {
   ApiCreatedResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { diskStorage, Multer } from 'multer';
 // Services
 import { ProjectService } from './projects.service';
 // Models
 import { LogIdRequest } from '@pt/logger';
-import { CreateProjectDto, Project } from '@pt/models';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { ImageInterceptor } from '../image/middleware/image.interceptor';
+import { CreateProjectDto } from '@pt/models';
+import { ImageInterceptor } from '@pt/image';
 
 @Controller()
 @ApiTags('Projects')

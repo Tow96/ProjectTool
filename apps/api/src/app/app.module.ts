@@ -5,7 +5,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { RoutingModule } from './app.routing';
 import { DatabaseModule } from './database/database.module';
-import { ImageModule } from './image/image.module';
+import { ImageModule } from '@pt/image';
 
 @Module({
   imports: [

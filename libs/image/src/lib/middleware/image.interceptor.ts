@@ -12,7 +12,7 @@ export const ImageInterceptor = () => {
   });
 };
 
-const fileFilter = (
+export const fileFilter = (
   req: any, // eslint-disable-line @typescript-eslint/no-explicit-any
   file: Express.Multer.File,
   callback: (error: Error, acceptFile: boolean) => void
