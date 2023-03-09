@@ -1,19 +1,29 @@
 // Libraries
-import { Body, Controller, Inject, Get, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Inject,
+  Get,
+  Post,
+  Req,
+  UseInterceptors,
+  UploadedFile,
+  UploadedFiles,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
-  ApiAcceptedResponse,
-  ApiConflictResponse,
-  ApiOkResponse,
   ApiCreatedResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { diskStorage, Multer } from 'multer';
 // Services
-import ProjectService from './projects.service';
+import { ProjectService } from './projects.service';
 // Models
 import { LogIdRequest } from '@pt/logger';
 import { CreateProjectDto, Project } from '@pt/models';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { ImageInterceptor } from '../image/middleware/image.interceptor';
 
 @Controller()
 @ApiTags('Projects')
@@ -28,11 +38,18 @@ export class ProjectsController {
   @ApiUnprocessableEntityResponse({
     description: 'The provided data has problems',
   })
+  @UseInterceptors(ImageInterceptor())
   async createProject(
     @Req() req: LogIdRequest,
-    @Body() project: CreateProjectDto
-  ): Promise<Project> {
-    return this.projectRepo.createProject(req['x-log-id'], project);
+    @Body() project: CreateProjectDto,
+    @UploadedFile() file: Express.Multer.File
+  ) {
+    // console.log(__dirname);
+    console.log(project.name);
+    console.log(file);
+
+    return 'a';
+    // return this.projectRepo.createProject(req['x-log-id'], project);
   }
 
   // @Get('c')

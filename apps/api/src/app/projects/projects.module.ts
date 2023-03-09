@@ -7,12 +7,11 @@ import { Project } from '@pt/models';
 // Controllers
 import { ProjectsController } from './projects.controller';
 // Services
-import { PidWinstonLogger } from '@pt/logger';
-import ProjectService from './projects.service';
+import { ProjectService } from './projects.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Project])],
   controllers: [ProjectsController],
-  providers: [ProjectService, PidWinstonLogger],
+  providers: [ProjectService],
 })
 export class ProjectsModule {}
