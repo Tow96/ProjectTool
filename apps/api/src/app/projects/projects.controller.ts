@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Inject,
+  Get,
   Post,
   Req,
   UseInterceptors,
@@ -15,6 +16,7 @@ import {
   ApiOperation,
   ApiCreatedResponse,
   ApiUnprocessableEntityResponse,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 // Services
 import { ProjectService } from './projects.service';
@@ -29,6 +31,14 @@ export class ProjectsController {
   constructor(
     @Inject(ProjectService) private readonly projectRepo: ProjectService
   ) {}
+
+  @Get()
+  @ApiOperation({ summary: 'Fetches all the projects' })
+  @ApiOkResponse({ description: 'A list of the projects' })
+  async readProjects(@Req() req: LogIdRequest): Promise<Project[]> {
+    const pid = req['x-log-id'];
+    return this.projectRepo.getProjects(pid);
+  }
 
   @Post()
   @ApiOperation({ summary: 'Creates a new Project an image can be added' })

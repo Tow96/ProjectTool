@@ -1,7 +1,10 @@
+import { ProjectStatus, Project } from '@pt/models';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
-export class Project {
+@Entity({
+  name: 'project',
+})
+export class ProjectEntity implements Project {
   @PrimaryGeneratedColumn({
     type: 'int',
   })
@@ -52,4 +55,6 @@ export class Project {
     nullable: true,
   })
   lastArchived: Date;
+
+  status: ProjectStatus;
 }

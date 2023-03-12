@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 // Services
 import { ConfigService } from '@nestjs/config';
-import { Project } from '@pt/models';
+import { ProjectEntity } from '../utils/index';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { Project } from '@pt/models';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
         synchronize: configService.get<boolean>('DB_SYNC'),
-        entities: [Project],
+        entities: [ProjectEntity],
       }),
     }),
   ],

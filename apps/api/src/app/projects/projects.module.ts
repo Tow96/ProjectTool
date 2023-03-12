@@ -5,14 +5,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ImageModule } from '@pt/image';
 import { LoggerModule } from '@pt/logger';
 // Entities
-import { Project } from '@pt/models';
+import { ProjectEntity } from '../utils';
 // Controllers
 import { ProjectsController } from './projects.controller';
 // Services
 import { ProjectService } from './projects.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Project]), LoggerModule, ImageModule],
+  imports: [
+    TypeOrmModule.forFeature([ProjectEntity]),
+    LoggerModule,
+    ImageModule,
+  ],
   controllers: [ProjectsController],
   providers: [ProjectService],
 })

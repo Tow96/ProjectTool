@@ -6,11 +6,11 @@ import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { PidWinstonLogger } from '@pt/logger';
 // Utils
-import { UPLOADS_FOLDER, UPLOADS_EXPIRATION } from './utils';
+import { UPLOADS_FOLDER, UPLOADS_EXPIRATION, THUMBNAILFOLDER } from './utils';
 
 @Injectable()
 export class ImageService {
-  thumbnailLocation: string;
+  private thumbnailLocation: string;
 
   constructor(
     private readonly logger: PidWinstonLogger,
@@ -18,7 +18,7 @@ export class ImageService {
   ) {
     this.thumbnailLocation = `${this.configService.get<string>(
       'COLD_FOLDER'
-    )}/.thumbnails`;
+    )}/${THUMBNAILFOLDER}`;
   }
 
   @Cron('0 0 * * * *') // Run every hour
