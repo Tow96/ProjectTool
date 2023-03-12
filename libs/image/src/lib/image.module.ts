@@ -9,5 +9,6 @@ import { ImageService } from './image.service';
 @Module({
   imports: [ScheduleModule.forRoot(), LoggerModule],
   providers: [ImageService],
+  exports: [ImageService],
 })
 export class ImageModule {}

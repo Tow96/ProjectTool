@@ -7,6 +7,8 @@ import {
   Req,
   UseInterceptors,
   UploadedFile,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -18,7 +20,7 @@ import {
 import { ProjectService } from './projects.service';
 // Models
 import { LogIdRequest } from '@pt/logger';
-import { CreateProjectDto } from '@pt/models';
+import { CreateProjectDto, Project } from '@pt/models';
 import { ImageInterceptor } from '@pt/image';
 
 @Controller()
@@ -29,7 +31,7 @@ export class ProjectsController {
   ) {}
 
   @Post()
-  @ApiOperation({ summary: 'Creates a new Project' })
+  @ApiOperation({ summary: 'Creates a new Project an image can be added' })
   @ApiCreatedResponse({ description: 'The project was successfully created' })
   @ApiUnprocessableEntityResponse({
     description: 'The provided data has problems',
@@ -37,20 +39,28 @@ export class ProjectsController {
   @UseInterceptors(ImageInterceptor())
   async createProject(
     @Req() req: LogIdRequest,
-    @Body() project: CreateProjectDto,
-    @UploadedFile() file: Express.Multer.File
-  ) {
-    // console.log(__dirname);
-    console.log(project.name);
-    console.log(file);
+    @Body() projectdto: CreateProjectDto,
+    @UploadedFile() file?: Express.Multer.File
+  ): Promise<Project> {
+    const pid = req['x-log-id'];
 
-    return 'a';
-    // return this.projectRepo.createProject(req['x-log-id'], project);
+    const projectExists = await this.projectRepo.findProjectByLocation(
+      projectdto.location,
+      pid
+    );
+    if (projectExists !== null) {
+      throw new HttpException(
+        `Project with location "${projectdto.location}" already exists`,
+        HttpStatus.UNPROCESSABLE_ENTITY
+      );
+    }
+
+    const project = await this.projectRepo.createProject(
+      pid,
+      projectdto,
+      file?.filename || undefined
+    );
+
+    return project;
   }
-
-  // @Get('c')
-  // @ApiOperation({ summary: 'This is another test route' })
-  // testB() {
-  //   return 'b';
-  // }
 }

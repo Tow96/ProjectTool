@@ -22,6 +22,7 @@ export class Project {
   @Column({
     type: 'simple-array',
     nullable: false,
+    default: '',
   })
   tags: number[];
 
@@ -33,10 +34,10 @@ export class Project {
 
   @Column({
     name: 'image_location',
-    nullable: false,
+    nullable: true,
     default: '',
   })
-  imageLocation: string;
+  imageLocation: string | null;
 
   @Column({
     type: 'datetime',

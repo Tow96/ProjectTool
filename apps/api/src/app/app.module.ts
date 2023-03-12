@@ -5,7 +5,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { RoutingModule } from './app.routing';
 import { DatabaseModule } from './database/database.module';
-import { ImageModule } from '@pt/image';
 
 @Module({
   imports: [
@@ -34,8 +33,6 @@ import { ImageModule } from '@pt/image';
     }),
     RoutingModule,
     DatabaseModule,
-
-    ImageModule,
   ],
 })
 export class AppModule {}
