@@ -1,7 +1,7 @@
 // Libraries
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import * as fs from 'fs';
 // Services
 import { PidWinstonLogger } from '@pt/logger';
@@ -56,6 +56,36 @@ export class ProjectService {
     return newProject;
   }
 
+  async deleteProject(pid: string, id: number): Promise<DeleteResult> {
+    this.logger.pidLog(pid, `Deleting project: ${id}`);
+
+    const project = await this.findById(pid, id);
+    if (project === null) {
+      throw new HttpException(
+        `Project with id: ${id} not found`,
+        HttpStatus.NOT_FOUND
+      );
+    }
+
+    if (project.imageLocation) {
+      this.imager.deleteImage(pid, project.imageLocation);
+    }
+
+    const deletedProject = await this.projectRepo.delete({ id });
+
+    this.logger.pidLog(pid, `Deleted: ${deletedProject.affected} project(s)`);
+
+    return deletedProject;
+  }
+
+  async findById(pid: string, id: number): Promise<ProjectEntity | null> {
+    this.logger.pidLog(pid, `Fetching project with id: ${id}`);
+    const dbProject = await this.projectRepo.findOneBy({ id });
+    if (dbProject === null) return null;
+
+    return this.getProjectStatus(dbProject);
+  }
+
   async findProjectByLocation(
     location: string,
     pid: string
@@ -71,7 +101,7 @@ export class ProjectService {
     const isInHot = hotFolders.findIndex((x) => x === input.location) > -1;
     const isInCold = coldFolders.findIndex((x) => x === input.location) > -1;
 
-    let status = 0;
+    let status = ProjectStatus.NOTFOUND;
 
     switch (true) {
       case isInHot && isInCold:

@@ -43,6 +43,11 @@ export class ImageService {
     this.logger.log(`Removed ${counter} file(s)`);
   }
 
+  deleteImage(pid: string, image: string): void {
+    this.logger.pidLog(pid, `Removing image: ${image}`);
+    fs.unlinkSync(`${this.thumbnailLocation}/${image}`);
+  }
+
   keepImage(pid: string, filename: string): void {
     const prevPath = `${UPLOADS_FOLDER}/${filename}`;
     const newPath = `${this.thumbnailLocation}/${filename}`;

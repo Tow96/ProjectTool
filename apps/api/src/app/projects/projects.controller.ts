@@ -2,8 +2,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Inject,
   Get,
+  Param,
   Post,
   Req,
   UseInterceptors,
@@ -24,6 +26,7 @@ import { ProjectService } from './projects.service';
 import { LogIdRequest } from '@pt/logger';
 import { CreateProjectDto, Project } from '@pt/models';
 import { ImageInterceptor } from '@pt/image';
+import { DeleteResult } from 'typeorm';
 
 @Controller()
 @ApiTags('Projects')
@@ -72,5 +75,16 @@ export class ProjectsController {
     );
 
     return project;
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Removes a Project from the Database' })
+  @ApiOkResponse({ description: 'The delete result' })
+  async deleteProject(
+    @Req() req: LogIdRequest,
+    @Param('id') id: number
+  ): Promise<DeleteResult> {
+    const pid = req['x-log-id'];
+    return this.projectRepo.deleteProject(pid, id);
   }
 }
