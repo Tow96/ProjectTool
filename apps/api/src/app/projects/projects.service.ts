@@ -7,7 +7,7 @@ import * as fs from 'fs';
 import { PidWinstonLogger } from '@pt/logger';
 import { ConfigService } from '@nestjs/config';
 // Models
-import { CreateProjectDto, ProjectStatus } from '@pt/models';
+import { CreateProjectDto, EditProjectDto, ProjectStatus } from '@pt/models';
 import { ImageService, THUMBNAILFOLDER } from '@pt/image';
 import { ProjectEntity } from '../utils';
 // Misc.
@@ -165,5 +165,53 @@ export class ProjectService {
       }
     });
     return output;
+  }
+
+  async updateProject(
+    pid: string,
+    original: ProjectEntity,
+    data: EditProjectDto,
+    fileName?: string
+  ): Promise<ProjectEntity> {
+    const clearImage = data.removeImg;
+    let imageLocation = clearImage ? null : original.imageLocation;
+
+    // This ensures only certain fields are updatable
+    const changes: Partial<ProjectEntity> = {};
+    // Name
+    if (data.name && data.name !== original.name) {
+      changes.name = data.name;
+    }
+    // Description
+    if (data.description && data.description !== original.description) {
+      changes.description = data.description;
+    }
+    // Image
+    if (fileName && fileName !== original.imageLocation) {
+      imageLocation = fileName;
+    }
+
+    if (Object.keys(changes).length === 0 && !fileName && !clearImage) {
+      this.logger.pidLog(pid, 'No changes necessary');
+      return this.getProjectStatus(original);
+    }
+
+    const updateProject = await this.projectRepo.save({
+      ...original,
+      ...changes,
+      imageLocation,
+    });
+
+    if (original.imageLocation !== null && (clearImage || fileName)) {
+      this.imager.deleteImage(pid, original.imageLocation);
+    }
+
+    if (fileName) {
+      this.imager.keepImage(pid, fileName);
+    }
+
+    this.logger.pidLog(pid, `Project ${original.id} updated`);
+
+    return updateProject;
   }
 }

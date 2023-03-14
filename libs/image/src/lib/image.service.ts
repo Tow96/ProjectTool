@@ -43,7 +43,14 @@ export class ImageService {
     this.logger.log(`Removed ${counter} file(s)`);
   }
 
+  createThumbnailFolder(): void {
+    if (!fs.existsSync(this.thumbnailLocation)) {
+      fs.mkdirSync(this.thumbnailLocation);
+    }
+  }
+
   deleteImage(pid: string, image: string): void {
+    if (!fs.existsSync(`${this.thumbnailLocation}/${image}`)) return;
     this.logger.pidLog(pid, `Removing image: ${image}`);
     fs.unlinkSync(`${this.thumbnailLocation}/${image}`);
   }
@@ -51,6 +58,8 @@ export class ImageService {
   keepImage(pid: string, filename: string): void {
     const prevPath = `${UPLOADS_FOLDER}/${filename}`;
     const newPath = `${this.thumbnailLocation}/${filename}`;
+
+    this.createThumbnailFolder();
 
     this.logger.pidLog(
       pid,

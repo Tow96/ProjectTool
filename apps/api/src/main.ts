@@ -27,7 +27,7 @@ async function bootstrap() {
 
   // Adds the body trimming pipe
   app.useGlobalPipes(new TrimPipe());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   // Enables CORS only if development
   if (configService.get('NODE_ENV') === 'development') app.enableCors();

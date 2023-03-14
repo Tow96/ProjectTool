@@ -7,6 +7,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Req,
   UseInterceptors,
   UploadedFile,
@@ -19,12 +20,13 @@ import {
   ApiCreatedResponse,
   ApiUnprocessableEntityResponse,
   ApiOkResponse,
+  ApiNotFoundResponse,
 } from '@nestjs/swagger';
 // Services
 import { ProjectService } from './projects.service';
 // Models
 import { LogIdRequest } from '@pt/logger';
-import { CreateProjectDto, Project } from '@pt/models';
+import { CreateProjectDto, EditProjectDto, Project } from '@pt/models';
 import { ImageInterceptor } from '@pt/image';
 import { DeleteResult } from 'typeorm';
 
@@ -34,14 +36,6 @@ export class ProjectsController {
   constructor(
     @Inject(ProjectService) private readonly projectRepo: ProjectService
   ) {}
-
-  @Get()
-  @ApiOperation({ summary: 'Fetches all the projects' })
-  @ApiOkResponse({ description: 'A list of the projects' })
-  async readProjects(@Req() req: LogIdRequest): Promise<Project[]> {
-    const pid = req['x-log-id'];
-    return this.projectRepo.getProjects(pid);
-  }
 
   @Post()
   @ApiOperation({ summary: 'Creates a new Project an image can be added' })
@@ -75,6 +69,42 @@ export class ProjectsController {
     );
 
     return project;
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Fetches all the projects' })
+  @ApiOkResponse({ description: 'A list of the projects' })
+  async readProjects(@Req() req: LogIdRequest): Promise<Project[]> {
+    const pid = req['x-log-id'];
+    return this.projectRepo.getProjects(pid);
+  }
+
+  @Put(':id')
+  @UseInterceptors(ImageInterceptor())
+  @ApiOperation({ summary: 'Updates the a project' })
+  @ApiOkResponse({ description: 'The updated result' })
+  @ApiUnprocessableEntityResponse({ description: 'Erroneous data provided' })
+  @ApiNotFoundResponse({ description: "Project doesn't exist" })
+  async updateProject(
+    @Req() req: LogIdRequest,
+    @Param('id') id: number,
+    @Body() data: EditProjectDto,
+    @UploadedFile() file?: Express.Multer.File
+  ): Promise<Project> {
+    const pid = req['x-log-id'];
+    const project = await this.projectRepo.findById(pid, id);
+    if (project === null) {
+      throw new HttpException(
+        `Project with id: ${id} not found`,
+        HttpStatus.NOT_FOUND
+      );
+    }
+    return this.projectRepo.updateProject(
+      pid,
+      project,
+      data,
+      file?.filename || undefined
+    );
   }
 
   @Delete(':id')
