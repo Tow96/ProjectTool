@@ -1,17 +1,26 @@
 // Libraries
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 // Modules
 import { RouterModule } from '@angular/router';
+import { FlexLayoutModule } from '@angular/flex-layout';
 // Components
 import { MainComponent } from './main.component';
+import { ProjectcardComponent } from '../../components/projectcard/projectcard.component';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [MainComponent],
   imports: [
     RouterModule.forChild([{ path: '', component: MainComponent }]),
     CommonModule,
+    FlexLayoutModule,
+    ProjectcardComponent,
+
+    MatCardModule,
+    MatButtonModule,
   ],
 })
 export class MainModule {}

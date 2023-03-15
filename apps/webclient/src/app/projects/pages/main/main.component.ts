@@ -16,12 +16,9 @@ export class MainComponent {
       imageLocation: 'path.jpg',
       lastArchived: new Date(),
       location: 'location',
-      name: 'PROJECT',
+      name: `PROJECT: ${this.projects.length}`,
       status: 0,
       tags: [],
     });
-  }
-  stringifyProject(project: Project): string {
-    return JSON.stringify(project);
   }
 }

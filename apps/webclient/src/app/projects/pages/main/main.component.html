@@ -1,4 +1,13 @@
-<div>
-  <button (click)="addProject()">aaa</button>
-  <div *ngFor="let project of projects">{{ stringifyProject(project) }}</div>
+<button (click)="addProject()">aaa</button>
+{{ projects.length }}
+<div fxLayout="row wrap" fxLayoutGap="16px grid">
+  <div
+    fxFlex="100%"
+    fxFlex.gt-xs="33%"
+    fxFlex.gt-sm="16.666%"
+    fxFlex.gt-lg="12.5%"
+    *ngFor="let project of projects"
+  >
+    <pt-projectcard [project]="project"></pt-projectcard>
+  </div>
 </div>
