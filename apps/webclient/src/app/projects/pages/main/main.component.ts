@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { Project } from '@pt/models';
+import * as animations from './main.animations';
 
 @Component({
   selector: 'pt-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
+  animations: [animations.cardAnimation],
 })
 export class MainComponent {
   projects: Project[] = [];
@@ -20,5 +22,8 @@ export class MainComponent {
       status: 0,
       tags: [],
     });
+  }
+  popProject(): void {
+    this.projects.pop();
   }
 }
