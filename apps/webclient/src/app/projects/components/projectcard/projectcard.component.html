@@ -4,11 +4,12 @@
   </mat-card-header>
   <img
     mat-card-image
-    src="{{ project?.imageLocation }}"
+    src="{{ project?.imageLocation || '/assets/default.png' }}"
     alt="{{ project?.name || 'image' }}"
   />
   <mat-card-content>
     <p>{{ project?.description }}</p>
+    {{ project?.imageLocation }}
   </mat-card-content>
   <mat-card-actions>
     <button mat-button>A</button>
