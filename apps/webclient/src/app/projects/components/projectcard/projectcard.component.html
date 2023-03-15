@@ -1,0 +1,17 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ project?.name || 'No Name' }}</mat-card-title>
+  </mat-card-header>
+  <img
+    mat-card-image
+    src="{{ project?.imageLocation }}"
+    alt="{{ project?.name || 'image' }}"
+  />
+  <mat-card-content>
+    <p>{{ project?.description }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>A</button>
+    <button mat-button>B</button>
+  </mat-card-actions>
+</mat-card>
