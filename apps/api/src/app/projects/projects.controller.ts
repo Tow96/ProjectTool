@@ -25,10 +25,11 @@ import {
 // Services
 import { ProjectService } from './projects.service';
 // Models
-import { LogIdRequest } from '@pt/logger';
-import { CreateProjectDto, EditProjectDto, Project } from '@pt/models';
-import { ImageInterceptor } from '@pt/image';
 import { DeleteResult } from 'typeorm';
+import { ImageInterceptor } from '@pt/image';
+import { LogIdRequest } from '@pt/logger';
+import { Project } from '@pt/models';
+import { CreateProjectDto, EditProjectDto } from '../utils';
 
 @Controller()
 @ApiTags('Projects')

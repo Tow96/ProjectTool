@@ -7,9 +7,9 @@ import * as fs from 'fs';
 import { PidWinstonLogger } from '@pt/logger';
 import { ConfigService } from '@nestjs/config';
 // Models
-import { CreateProjectDto, EditProjectDto, ProjectStatus } from '@pt/models';
 import { ImageService, THUMBNAILFOLDER } from '@pt/image';
-import { ProjectEntity } from '../utils';
+import { ProjectStatus } from '@pt/models';
+import { CreateProjectDto, EditProjectDto, ProjectEntity } from '../utils';
 // Misc.
 
 @Injectable()

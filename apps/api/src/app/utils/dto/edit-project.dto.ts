@@ -3,6 +3,7 @@
  *
  * Dto for creating projects
  */
+import { EditProject } from '@pt/models';
 import {
   IsArray,
   IsBoolean,
@@ -11,7 +12,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class EditProjectDto {
+export class EditProjectDto implements EditProject {
   @IsOptional()
   @IsString({ message: 'name must be a string' })
   @MinLength(3, { message: 'name must be at least three characters long' })

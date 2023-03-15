@@ -5,9 +5,10 @@
  */
 import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { CreateProject } from '@pt/models';
 
 // TODO: i18n
-export class CreateProjectDto {
+export class CreateProjectDto implements CreateProject {
   @IsString({ message: 'name must be a string' })
   @MinLength(3, { message: 'name must be at least three characters long' })
   @ApiProperty({ description: 'Name of the project', example: 'project' })
@@ -34,6 +35,4 @@ export class CreateProjectDto {
     example: 'project',
   })
   location: string;
-
-  // // TODO: img
 }
