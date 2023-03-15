@@ -13,7 +13,7 @@ export class MainComponent {
       createdOn: new Date(),
       description: 'description',
       id: 0,
-      imageLocation: 'path.jpg',
+      imageLocation: null,
       lastArchived: new Date(),
       location: 'location',
       name: `PROJECT: ${this.projects.length}`,
