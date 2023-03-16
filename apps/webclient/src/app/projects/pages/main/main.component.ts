@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { Project } from '@pt/models';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { ProjectActions, ProjectViewModels } from '../../data';
+import { MainViewModel } from '../../utils';
 import * as animations from './main.animations';
 
 @Component({
@@ -8,22 +11,34 @@ import * as animations from './main.animations';
   styleUrls: ['./main.component.scss'],
   animations: [animations.cardAnimation],
 })
-export class MainComponent {
-  projects: Project[] = [];
-  addProject(): void {
-    this.projects.push({
-      createdOn: new Date(),
-      description: 'description',
-      id: 0,
-      imageLocation: null,
-      lastArchived: new Date(),
-      location: 'location',
-      name: `PROJECT: ${this.projects.length}`,
-      status: 0,
-      tags: [],
-    });
+export class MainComponent implements OnInit {
+  vm$?: Observable<MainViewModel>;
+
+  constructor(private readonly store: Store) {}
+
+  ngOnInit() {
+    this.vm$ = this.store.select(ProjectViewModels.selectMainViewModel);
   }
+
+  addProject(): void {
+    this.store.dispatch(
+      ProjectActions.testAddProject({
+        project: {
+          createdOn: new Date(),
+          description: 'description',
+          id: 0,
+          imageLocation: null,
+          lastArchived: new Date(),
+          location: 'location',
+          name: `PROJECT:`,
+          status: 0,
+          tags: [],
+        },
+      })
+    );
+  }
+
   popProject(): void {
-    this.projects.pop();
+    this.store.dispatch(ProjectActions.testPopProject());
   }
 }

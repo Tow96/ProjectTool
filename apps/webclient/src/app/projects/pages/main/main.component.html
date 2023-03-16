@@ -1,21 +1,23 @@
-<button (click)="addProject()">aaa</button>
-<button (click)="popProject()">aaa</button>
-{{ projects.length }}
-<div
-  class="content"
-  fxLayout="row wrap"
-  fxLayoutGap="16px grid"
-  fxLayoutAlign="start start"
-  fxFlexFill
->
+<ng-container *ngIf="vm$ | async as vm">
+  <button (click)="addProject()">aaa</button>
+  <button (click)="popProject()">aaa</button>
+  {{ vm.projects.length }}
   <div
-    @card
-    fxFlex="100%"
-    fxFlex.gt-xs="33.333%"
-    fxFlex.gt-sm="16.666%"
-    fxFlex.gt-lg="12.5%"
-    *ngFor="let project of projects"
+    class="content"
+    fxLayout="row wrap"
+    fxLayoutGap="16px grid"
+    fxLayoutAlign="start start"
+    fxFlexFill
   >
-    <pt-projectcard [project]="project"></pt-projectcard>
+    <div
+      @card
+      fxFlex="100%"
+      fxFlex.gt-xs="33.333%"
+      fxFlex.gt-sm="16.666%"
+      fxFlex.gt-lg="12.5%"
+      *ngFor="let project of vm.projects"
+    >
+      <pt-projectcard [project]="project"></pt-projectcard>
+    </div>
   </div>
-</div>
+</ng-container>
