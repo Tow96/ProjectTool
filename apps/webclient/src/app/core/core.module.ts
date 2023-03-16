@@ -6,6 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
+import { ToastService } from './data';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const devModules = [
   StoreDevtoolsModule.instrument({
@@ -37,6 +39,9 @@ const devModules = [
     EffectsModule.forRoot([]),
     // dev modules
     ...devModules,
+
+    MatSnackBarModule,
   ],
+  providers: [ToastService],
 })
 export class CoreModule {}
