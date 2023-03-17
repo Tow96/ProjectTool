@@ -1,0 +1,27 @@
+PALLETTES
+| Theme                | Light? | Palettes (primary, accent, warn) |
+|----------------------|--------|----------------------------------|
+| deeppurple-amber.css | Light  | deep-purple, amber, red 	       |
+| indigo-pink.css      | Light  | indigo, pink, red 	        	   |
+| pink-bluegray.css    | Dark   | pink, bluegray, red       		   |
+| purple-green.css     | Dark   | purple, green, red 	        	   |
+
+
+TYPOGRAPHY
+| Name         | CSS Class                       | Native Element | Description
+|--------------|---------------------------------|----------------|---------------
+| display-4    | .mat-display-4                  | None           | 112px, one-off header, usually at the top of the page (e.g. a hero header). |
+| display-3    | .mat-display-3                  | None           | 56px, one-off header, usually at the top of the page (e.g. a hero header). |
+| display-2    | .mat-display-2                  | None           | 45px, one-off header, usually at the top of the page (e.g. a hero header). |
+| display-1    | .mat-display-1                  | None           | 34px, one-off header, usually at the top of the page (e.g. a hero header). |
+| headline     | .mat-h1 or .mat-headline        | <h1>           | Section heading corresponding to the <h1> tag.
+| title        | .mat-h2 or .mat-title           | <h2>           | Section heading corresponding to the <h2> tag.
+| subheading-2 | .mat-h3 or .mat-subheading-2    | <h3>           | Section heading corresponding to the <h3> tag.
+| subheading-1 | .mat-h4 or .mat-subheading-1    | <h4>           | Section heading corresponding to the <h4> tag.
+| ------------ | .mat-h5                         | <h5>           | --
+| ------------ | .mat-h6                         | <h6>           | --
+| body-1       | .mat-body or .mat-body-1        | Body text      | Base body text.
+| body-2       | .mat-body-strong or .mat-body-2 | None           | Bolder body text.
+| caption      | .mat-small or .mat-caption      | None           | Smaller body and hint text.
+| button       | ------------------------------- | -------------- | Buttons and anchors.
+| input        | ------------------------------- | -------------- | Form input fields.

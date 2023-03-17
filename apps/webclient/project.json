@@ -7,16 +7,12 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/webclient",
         "index": "apps/webclient/src/index.html",
         "main": "apps/webclient/src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
+        "polyfills": ["zone.js"],
         "tsConfig": "apps/webclient/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -24,8 +20,12 @@
           "apps/webclient/src/assets"
         ],
         "styles": [
-          "@angular/material/prebuilt-themes/pink-bluegrey.css",
-          "apps/webclient/src/styles.scss"
+          "apps/webclient/src/styles.scss",
+          {
+            "input": "apps/webclient/src/assets/themes/_light.scss",
+            "bundleName": "light-theme",
+            "inject": false
+          }
         ],
         "scripts": []
       },
@@ -76,9 +76,7 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
           "apps/webclient/**/*.ts",
@@ -88,9 +86,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/webclient/jest.config.ts",
         "passWithNoTests": true

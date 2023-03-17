@@ -1,0 +1,14 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+
+$webclient-primary: mat.define-palette(mat.$pink-palette);
+$webclient-accent: mat.define-palette(mat.$blue-gray-palette, A200, A100, A400);
+$webclient-warn: mat.define-palette(mat.$red-palette);
+
+$webclient-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $webclient-primary,
+    accent: $webclient-accent,
+    warn: $webclient-warn,
+  )
+));
