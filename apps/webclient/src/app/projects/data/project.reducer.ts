@@ -6,31 +6,50 @@ import { ProjectActions } from '.';
 export const projectsFeatureKey = 'projects';
 
 export interface State extends EntityState<Project> {
-  // additional entities state properties
+  lastUpdated: Date;
+  loaded: boolean;
+  loading: boolean;
 }
 
 export const adapter: EntityAdapter<Project> = createEntityAdapter<Project>();
 
 export const initialState: State = adapter.getInitialState({
-  // additional entity state properties
+  lastUpdated: new Date(0, 0, 0),
+  loaded: false,
+  loading: false,
 });
 
 export const reducer = createReducer(
   initialState,
-  on(ProjectActions.testAddProject, (state, action) =>
-    adapter.addOne(
-      {
-        ...action.project,
-        id: state.ids.length,
-        name: `PROJECT: ${state.ids.length}`,
-      },
-      state
-    )
+  // Start loading
+  on(ProjectActions.loadProjects, (state) => ({ ...state, loading: true })),
+  // Stop loading
+  on(
+    ProjectActions.loadProjectsCached,
+    ProjectActions.loadProjectsCancelled,
+    ProjectActions.loadProjectsSuccess,
+    (state) => ({ ...state, loading: false })
   ),
-  on(ProjectActions.testPopProject, (state) =>
-    adapter.removeOne(state.ids.slice(-1).toString(), state)
+  // Set loaded
+  on(
+    ProjectActions.loadProjectsCancelled,
+    ProjectActions.loadProjectsSuccess,
+    (state) => ({ ...state, loaded: true })
+  ),
+  // Set projects
+  on(ProjectActions.loadProjectsSuccess, (state, action) =>
+    setProjects(state, action)
   )
 );
 
 export const { selectIds, selectEntities, selectAll, selectTotal } =
   adapter.getSelectors();
+
+const setProjects = (state: State, action: { projects: Project[] }): State => {
+  const newState = adapter.setAll(action.projects, state);
+
+  return {
+    ...newState,
+    lastUpdated: new Date(),
+  };
+};

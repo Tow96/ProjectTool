@@ -14,3 +14,13 @@ export const selectAll = createSelector(
   selectProjectState,
   fromProjects.selectAll
 );
+
+export const selectLastUpdated = createSelector(
+  selectProjectState,
+  (state) => state.lastUpdated
+);
+
+export const selectLoadState = createSelector(selectProjectState, (state) => ({
+  loaded: state.loaded,
+  loading: state.loading,
+}));

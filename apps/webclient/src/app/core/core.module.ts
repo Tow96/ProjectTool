@@ -1,5 +1,5 @@
 // Libraries
-import { isDevMode, NgModule } from '@angular/core';
+import { enableProdMode, isDevMode, NgModule } from '@angular/core';
 // Modules
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,8 +8,10 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { GlobalErrorHandler, StyleManagerService, ToastService } from './utils';
+import { environment } from '../../environments/environment';
+import { HttpClientModule } from '@angular/common/http';
 
-const devModules = [
+let devModules = [
   StoreDevtoolsModule.instrument({
     maxAge: 25,
     logOnly: !isDevMode(),
@@ -18,10 +20,20 @@ const devModules = [
   }),
 ];
 
+if (environment.production) {
+  devModules = [];
+  enableProdMode();
+}
+
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
+
+    // Global modules
+    MatSnackBarModule,
+
     // NGRX
     StoreModule.forRoot(
       {},
@@ -37,10 +49,9 @@ const devModules = [
       }
     ),
     EffectsModule.forRoot([]),
+
     // dev modules
     ...devModules,
-
-    MatSnackBarModule,
   ],
   providers: [ToastService, StyleManagerService, GlobalErrorHandler],
 })

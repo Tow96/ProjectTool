@@ -1,9 +1,22 @@
 import { createAction, props } from '@ngrx/store';
 import { Project } from '@pt/models';
 
-export const testAddProject = createAction(
-  '[Project/API] Test Add Project',
-  props<{ project: Project }>()
+export const loadProjects = createAction('[Projects Page] Load Projects');
+
+export const loadProjectsCancelled = createAction(
+  '[Project Effects] Load Projects Cancelled'
 );
 
-export const testPopProject = createAction('[Project/API] Test Pop Project');
+export const loadProjectsCached = createAction(
+  '[Project Effects] Load Projects Cached'
+);
+
+export const loadProjectsSuccess = createAction(
+  '[Project Effects] Load Projects Success ',
+  props<{ projects: Project[] }>()
+);
+
+export const loadProjectsFailure = createAction(
+  '[Project Effects] Load Projects Failure',
+  props<{ message: string }>()
+);

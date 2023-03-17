@@ -1,6 +1,7 @@
 import { ErrorHandler, Injectable, Provider } from '@angular/core';
 import { ToastService } from './toast.service';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 @Injectable()
 export class GlobalErrorHandlerService implements ErrorHandler {
   constructor(private readonly toast: ToastService) {}

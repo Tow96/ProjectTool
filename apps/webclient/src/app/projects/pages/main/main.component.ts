@@ -18,27 +18,6 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.vm$ = this.store.select(ProjectViewModels.selectMainViewModel);
-  }
-
-  addProject(): void {
-    this.store.dispatch(
-      ProjectActions.testAddProject({
-        project: {
-          createdOn: new Date(),
-          description: 'description',
-          id: 0,
-          imageLocation: null,
-          lastArchived: new Date(),
-          location: 'location',
-          name: `PROJECT:`,
-          status: 0,
-          tags: [],
-        },
-      })
-    );
-  }
-
-  popProject(): void {
-    this.store.dispatch(ProjectActions.testPopProject());
+    this.store.dispatch(ProjectActions.loadProjects());
   }
 }

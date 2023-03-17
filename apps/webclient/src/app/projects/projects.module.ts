@@ -1,8 +1,12 @@
+// Libraries
 import { NgModule } from '@angular/core';
+// Modules
 import { CommonModule } from '@angular/common';
-import { ProjectsRouting } from './projects.routing';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { fromProjects } from './data';
+import { ProjectsRouting } from './projects.routing';
+// Data access
+import { fromProjects, ProjectApiService, ProjectEffects } from './data';
 
 @NgModule({
   imports: [
@@ -12,6 +16,8 @@ import { fromProjects } from './data';
       fromProjects.projectsFeatureKey,
       fromProjects.reducer
     ),
+    EffectsModule.forFeature([ProjectEffects]),
   ],
+  providers: [ProjectApiService],
 })
 export class ProjectsModule {}
