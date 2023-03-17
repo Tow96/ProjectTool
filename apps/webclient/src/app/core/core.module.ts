@@ -6,8 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
-import { ToastService } from './data';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { GlobalErrorHandler, StyleManagerService, ToastService } from './utils';
 
 const devModules = [
   StoreDevtoolsModule.instrument({
@@ -42,6 +42,6 @@ const devModules = [
 
     MatSnackBarModule,
   ],
-  providers: [ToastService],
+  providers: [ToastService, StyleManagerService, GlobalErrorHandler],
 })
 export class CoreModule {}

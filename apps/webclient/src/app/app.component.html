@@ -1,7 +1,25 @@
-<div class="mat-app-background app">
-  <button (click)="onBasicClck()">basic toast</button>
-  <button (click)="onAccentClck()">accent toast</button>
-  <button (click)="onPrimaryClck()">primary toast</button>
-  <button (click)="onWarnClck()">warn toast</button>
+<div class="app">
+  <button
+    mat-icon-button
+    (click)="toggleDarkTheme()"
+    class="theme-toggle"
+    aria-label="Toggle Dark Theme"
+  >
+    <mat-icon>{{ isDark ? 'dark_mode' : 'light_mode' }}</mat-icon>
+  </button>
+
+  <button mat-raised-button (click)="onBasicClck()">basic toast</button>
+  <button mat-raised-button color="accent" (click)="onAccentClck()">
+    accent toast
+  </button>
+  <button mat-raised-button color="primary" (click)="onPrimaryClck()">
+    primary toast
+  </button>
+  <button mat-raised-button color="warn" (click)="onWarnClck()">
+    warn toast
+  </button>
+  <button mat-raised-button color="warn" (click)="onThrowClck()">
+    Throw error
+  </button>
   <router-outlet></router-outlet>
 </div>
