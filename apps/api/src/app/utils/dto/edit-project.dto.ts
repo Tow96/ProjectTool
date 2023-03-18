@@ -9,8 +9,10 @@ import {
   IsBoolean,
   IsOptional,
   IsString,
+  MaxLength,
   MinLength,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class EditProjectDto implements EditProject {
   @IsOptional()
@@ -20,7 +22,7 @@ export class EditProjectDto implements EditProject {
 
   @IsOptional()
   @IsString({ message: 'description must be a string' })
-  // TODO: Max Length?
+  @Transform(({ value }) => value.slice(0, 140))
   description: string;
 
   @IsOptional()

@@ -6,6 +6,7 @@
 import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateProject } from '@pt/models';
+import { Transform } from 'class-transformer';
 
 // TODO: i18n
 export class CreateProjectDto implements CreateProject {
@@ -16,6 +17,7 @@ export class CreateProjectDto implements CreateProject {
 
   // TODO: Max Length?
   @IsString({ message: 'description must be a string' })
+  @Transform(({ value }) => value.slice(0, 140))
   @ApiProperty({
     description: 'Short description of the project',
     example: 'Project description',

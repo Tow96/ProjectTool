@@ -19,6 +19,7 @@ export class ProjectEntity implements Project {
   @Column({
     nullable: false,
     default: '',
+    length: 140,
   })
   description: string;
 
