@@ -1,0 +1,10 @@
+.cardimg {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.text-oneline ::ng-deep * {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

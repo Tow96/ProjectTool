@@ -10,6 +10,7 @@ import { ProjectcardComponent } from '../../components/projectcard/projectcard.c
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { ToolBarComponent } from '../../../core';
 
 @NgModule({
   declarations: [MainComponent],
@@ -21,6 +22,8 @@ import { MatButtonModule } from '@angular/material/button';
 
     MatCardModule,
     MatButtonModule,
+
+    ToolBarComponent,
   ],
 })
 export class MainModule {}

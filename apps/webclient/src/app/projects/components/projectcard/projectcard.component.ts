@@ -21,4 +21,8 @@ export class ProjectcardComponent {
 
     return '/assets/default.png';
   }
+
+  getStatus() {
+    return this.project?.status;
+  }
 }

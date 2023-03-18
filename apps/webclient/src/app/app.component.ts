@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { ThemeActions } from './core';
 // import { StyleManagerService } from './core/utils';
 
 @Component({
@@ -6,11 +8,10 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  // isDark = this.styleManager.isDark;
-  // constructor(private readonly styleManager: StyleManagerService) {}
-  // toggleDarkTheme() {
-  //   this.styleManager.toggleDarkTheme();
-  //   this.isDark = this.styleManager.isDark;
-  // }
+export class AppComponent implements OnInit {
+  constructor(private readonly store: Store) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(ThemeActions.setInitialMode());
+  }
 }

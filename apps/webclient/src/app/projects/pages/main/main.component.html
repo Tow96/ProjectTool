@@ -1,3 +1,4 @@
+<pt-tool-bar></pt-tool-bar>
 <ng-container *ngIf="vm$ | async as vm">
   <div
     class="content"
@@ -6,13 +7,14 @@
     fxLayoutAlign="start start"
     fxFlexFill
   >
+    <!-- TODO: Set custom sizes -->
     <div
       @card
-      fxFlex="100%"
-      fxFlex.gt-xs="33.333%"
-      fxFlex.gt-sm="16.666%"
-      fxFlex.gt-lg="12.5%"
       *ngFor="let project of vm.projects"
+      fxFlex="16.666%"
+      fxFlex.xs="50%"
+      fxFlex.sm="33.333%"
+      fxFlex.md="25%"
     >
       <pt-projectcard [project]="project"></pt-projectcard>
     </div>

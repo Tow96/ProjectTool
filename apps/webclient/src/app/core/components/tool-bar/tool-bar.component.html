@@ -1,0 +1,11 @@
+<mat-toolbar color="primary" *ngIf="vm$ | async as vm">
+  <span class="bar-spacer"></span>
+  <button
+    mat-icon-button
+    aria-label="Toggle Dark theme"
+    (click)="onDarkModeToggle()"
+  >
+    <mat-icon @icon *ngIf="vm.dark">{{ 'dark_mode' }}</mat-icon>
+    <mat-icon @icon *ngIf="!vm.dark">{{ 'light_mode' }}</mat-icon>
+  </button>
+</mat-toolbar>

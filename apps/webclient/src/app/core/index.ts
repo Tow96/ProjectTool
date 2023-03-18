@@ -1,3 +1,5 @@
 export * from './core.module';
-export * from './data';
+export * from './components';
+export * from './data/api.service';
+export * from './data/actions';
 export * from './utils';

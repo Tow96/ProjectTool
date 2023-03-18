@@ -1,15 +1,19 @@
 // Libraries
 import { enableProdMode, isDevMode, NgModule } from '@angular/core';
 // Modules
+import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+// Services
 import { GlobalErrorHandler, StyleManagerService, ToastService } from './utils';
+// Misc.
 import { environment } from '../../environments/environment';
-import { HttpClientModule } from '@angular/common/http';
+import { fromTheme } from './data';
+import { ThemeEffects } from './data/effects';
 
 let devModules = [
   StoreDevtoolsModule.instrument({
@@ -36,7 +40,9 @@ if (environment.production) {
 
     // NGRX
     StoreModule.forRoot(
-      {},
+      {
+        [fromTheme.featureKey]: fromTheme.reducer,
+      },
       {
         metaReducers: [],
         runtimeChecks: {
@@ -48,8 +54,7 @@ if (environment.production) {
         },
       }
     ),
-    EffectsModule.forRoot([]),
-
+    EffectsModule.forRoot([ThemeEffects]),
     // dev modules
     ...devModules,
   ],

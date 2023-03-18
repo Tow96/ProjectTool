@@ -1,13 +1,63 @@
-@use "@angular/material" as mat;
-@use "./assets/themes/dark";
-@use "./assets/styles/snackbar-theme" as custom-snack;
+@use '@angular/material' as mat;
+@use './assets/themes/dark';
+@use './assets/styles/snackbar-theme' as custom-snack;
 
 @include mat.core();
 @include mat.core-theme(dark.$webclient-dark-theme);
+@include mat.ripple-theme(dark.$webclient-dark-theme);
+// @include mat.option-theme(dark.$webclient-dark-theme);
+// @include mat.optgroup-theme(dark.$webclient-dark-theme);
+// @include mat.pseudo-checkbox-theme(dark.$webclient-dark-theme);
+@include mat.strong-focus-indicators-theme(dark.$webclient-dark-theme);
+// @include mat.autocomplete-theme(dark.$webclient-dark-theme);
+// @include mat.badge-theme(dark.$webclient-dark-theme);
+// @include mat.bottom-sheet-theme(dark.$webclient-dark-theme);
 @include mat.button-theme(dark.$webclient-dark-theme);
+// @include mat.fab-theme(dark.$webclient-dark-theme);
+@include mat.icon-button-theme(dark.$webclient-dark-theme);
+// @include mat.button-toggle-theme(dark.$webclient-dark-theme);
 @include mat.card-theme(dark.$webclient-dark-theme);
+// @include mat.checkbox-theme(dark.$webclient-dark-theme);
+// @include mat.chips-theme(dark.$webclient-dark-theme);
+// @include mat.datepicker-theme(dark.$webclient-dark-theme);
+// @include mat.dialog-theme(dark.$webclient-dark-theme);
+// @include mat.divider-theme(dark.$webclient-dark-theme);
+// @include mat.expansion-theme(dark.$webclient-dark-theme);
+// @include mat.form-field-theme(dark.$webclient-dark-theme);
+// @include mat.grid-list-theme(dark.$webclient-dark-theme);
+@include mat.icon-theme(dark.$webclient-dark-theme);
+// @include mat.input-theme(dark.$webclient-dark-theme);
+// @include mat.list-theme(dark.$webclient-dark-theme);
+// @include mat.menu-theme(dark.$webclient-dark-theme);
+// @include mat.paginator-theme(dark.$webclient-dark-theme);
+// @include mat.progress-bar-theme(dark.$webclient-dark-theme);
+// @include mat.progress-spinner-theme(dark.$webclient-dark-theme);
+// @include mat.radio-theme(dark.$webclient-dark-theme);
+// @include mat.select-theme(dark.$webclient-dark-theme);
+// @include mat.sidenav-theme(dark.$webclient-dark-theme);
+// @include mat.slide-toggle-theme(dark.$webclient-dark-theme);
+// @include mat.slider-theme(dark.$webclient-dark-theme);
 @include mat.snack-bar-theme(dark.$webclient-dark-theme);
+// @include mat.sort-theme(dark.$webclient-dark-theme);
+// @include mat.stepper-theme(dark.$webclient-dark-theme);
+// @include mat.table-theme(dark.$webclient-dark-theme);
+// @include mat.tabs-theme(dark.$webclient-dark-theme);
+@include mat.toolbar-theme(dark.$webclient-dark-theme);
+// @include mat.tooltip-theme(dark.$webclient-dark-theme);
+// @include mat.tree-theme(dark.$webclient-dark-theme);
+
 @include custom-snack.theme(dark.$webclient-dark-theme);
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+* {
+  transition: background-color 500ms ease;
+}
