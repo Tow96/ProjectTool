@@ -1,6 +1,16 @@
-.cardimg {
+.card__header {
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.card__img {
   aspect-ratio: 1 / 1;
   object-fit: cover;
+  max-width: 100%;
+}
+
+.card_content {
+  margin-top: 10px;
 }
 
 .text-oneline ::ng-deep * {

@@ -23,10 +23,10 @@
 // @include mat.dialog-theme(dark.$webclient-dark-theme);
 // @include mat.divider-theme(dark.$webclient-dark-theme);
 // @include mat.expansion-theme(dark.$webclient-dark-theme);
-// @include mat.form-field-theme(dark.$webclient-dark-theme);
+@include mat.form-field-theme(dark.$webclient-dark-theme);
 // @include mat.grid-list-theme(dark.$webclient-dark-theme);
 @include mat.icon-theme(dark.$webclient-dark-theme);
-// @include mat.input-theme(dark.$webclient-dark-theme);
+@include mat.input-theme(dark.$webclient-dark-theme);
 // @include mat.list-theme(dark.$webclient-dark-theme);
 // @include mat.menu-theme(dark.$webclient-dark-theme);
 // @include mat.paginator-theme(dark.$webclient-dark-theme);

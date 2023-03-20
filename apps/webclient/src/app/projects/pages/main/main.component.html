@@ -1,22 +1,17 @@
-<pt-tool-bar></pt-tool-bar>
-<ng-container *ngIf="vm$ | async as vm">
-  <div
-    class="content"
-    fxLayout="row wrap"
-    fxLayoutGap="16px grid"
-    fxLayoutAlign="start start"
-    fxFlexFill
-  >
-    <!-- TODO: Set custom sizes -->
-    <div
-      @card
-      *ngFor="let project of vm.projects"
-      fxFlex="16.666%"
-      fxFlex.xs="50%"
-      fxFlex.sm="33.333%"
-      fxFlex.md="25%"
-    >
-      <pt-projectcard [project]="project"></pt-projectcard>
+<div class="projects">
+  <pt-tool-bar></pt-tool-bar>
+  <ng-container *ngIf="vm$ | async as vm">
+    <form class="projects__searchbar">
+      <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input matInput />
+      </mat-form-field>
+    </form>
+
+    <div class="projects__list">
+      <div @card *ngFor="let project of vm.projects">
+        <pt-projectcard [project]="project"></pt-projectcard>
+      </div>
     </div>
-  </div>
-</ng-container>
+  </ng-container>
+</div>

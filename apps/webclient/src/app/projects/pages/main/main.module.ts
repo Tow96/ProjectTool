@@ -10,6 +10,8 @@ import { ProjectcardComponent } from '../../components/projectcard/projectcard.c
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { ToolBarComponent } from '../../../core';
 
 @NgModule({
@@ -22,6 +24,8 @@ import { ToolBarComponent } from '../../../core';
 
     MatCardModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
 
     ToolBarComponent,
   ],

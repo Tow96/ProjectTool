@@ -45,8 +45,29 @@ export const reducer = createReducer(
 export const { selectIds, selectEntities, selectAll, selectTotal } =
   adapter.getSelectors();
 
+export const fillDummyTest = (startid: number, amount: number): Project[] => {
+  const output: Project[] = [];
+  for (let i = 0; i < amount; i++) {
+    output.push({
+      name: 'DUMMY',
+      id: startid + i,
+      status: 0,
+    } as Project);
+  }
+
+  return output;
+};
+
 const setProjects = (state: State, action: { projects: Project[] }): State => {
-  const newState = adapter.setAll(action.projects, state);
+  // TODO: Remove this
+  const TESTARRAY = [
+    ...fillDummyTest(action.projects.length, 40),
+    ...action.projects,
+  ];
+  const newState = adapter.setAll(TESTARRAY, state);
+
+  // TODO: Re-enable this
+  // const newState = adapter.setAll(action.projects, state);
 
   return {
     ...newState,
