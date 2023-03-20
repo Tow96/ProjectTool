@@ -25,6 +25,13 @@ export class MainComponent implements OnInit {
     this.store.dispatch(ProjectActions.loadProjects());
   }
 
+  fillRow(length: number): number[] {
+    let fillerCount = ScreenSizeColumns[this.screenSize] - length;
+    fillerCount = fillerCount >= 0 ? fillerCount : 0;
+
+    return Array(fillerCount).fill(0);
+  }
+
   getRowHeight(): number {
     const screen = window.innerWidth;
     const columns = ScreenSizeColumns[this.getScreenSize()];
