@@ -4,12 +4,20 @@
       {{ getProjectName() }}
     </mat-card-title>
   </mat-card-header>
-  <img
-    class="card__img"
-    mat-card-image
-    src="{{ getImageLocation(project?.imageLocation) }}"
-    alt="{{ project?.name || 'image' }}"
-  />
+  <!-- src="{{ getImageLocation(project?.imageLocation) }}" -->
+  <div class="card__img">
+    <div *ngIf="loading" class="card__img__spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+    <img
+      mat-card-image
+      class="card__img__content"
+      [ngStyle]="getImageStyle()"
+      (load)="onImgLoad()"
+      src="{{ getImageLocation(project?.imageLocation) }}"
+      [alt]="project?.name || 'image'"
+    />
+  </div>
   <mat-card-content class="card_content">
     {{ getStatus() }}
     <!-- <p>{{ project?.description }}</p> -->

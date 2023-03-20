@@ -7,7 +7,6 @@ export const selectMainViewModel = (
   screenSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 ) =>
   createSelector(ProjectSelectors.selectAll, (projects): MainViewModel => {
-    console.log(ScreenSizeColumns[screenSize]);
     const chunkSize = ScreenSizeColumns[screenSize];
     const chunkedProjects: Project[][] = [];
 

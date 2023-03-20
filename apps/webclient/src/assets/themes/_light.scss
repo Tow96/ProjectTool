@@ -51,7 +51,7 @@ $webclient-light-theme: mat.define-light-theme(
   // @include mat.menu-color($webclient-light-theme);
   // @include mat.paginator-color($webclient-light-theme);
   // @include mat.progress-bar-color($webclient-light-theme);
-  // @include mat.progress-spinner-color($webclient-light-theme);
+  @include mat.progress-spinner-color($webclient-light-theme);
   // @include mat.radio-color($webclient-light-theme);
   // @include mat.select-color($webclient-light-theme);
   // @include mat.sidenav-color($webclient-light-theme);

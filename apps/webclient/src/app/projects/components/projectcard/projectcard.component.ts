@@ -2,23 +2,30 @@
 import { Component, Input } from '@angular/core';
 // Modules
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // Services
 import { MatButtonModule } from '@angular/material/button';
-// Selectors
 // Models
 import { Project, ProjectStatus } from '@pt/models';
 // Misc.
 import { environment } from '../../../../environments/environment';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'pt-projectcard',
   templateUrl: './projectcard.component.html',
   styleUrls: ['./projectcard.component.scss'],
   standalone: true,
-  imports: [MatCardModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+  ],
 })
 export class ProjectcardComponent {
   imageUrl = environment.imageUrl;
+  loading = true;
 
   @Input() project: Project | null = null;
 
@@ -31,11 +38,16 @@ export class ProjectcardComponent {
   }
 
   getImageLocation(img?: string | null): string {
-    // TODO: Re-enable this
-    // if (img) return `${this.imageUrl}/${img}`;
+    if (img) return `${this.imageUrl}/${img}`;
 
-    // return '/assets/default.png';
-    return `https://picsum.photos/${Math.abs(this.project?.id || 1) * 100}`;
+    return '/assets/default.png';
+  }
+
+  getImageStyle(): Record<string, number | string> {
+    return {
+      opacity: this.loading ? 0 : 1,
+      visibility: this.loading ? 'hidden' : 'visible',
+    };
   }
 
   getStatus(): string {
@@ -50,5 +62,9 @@ export class ProjectcardComponent {
       default:
         return 'Lost';
     }
+  }
+
+  onImgLoad(): void {
+    this.loading = false;
   }
 }
