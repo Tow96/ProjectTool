@@ -63,6 +63,7 @@ const setProjects = (state: State, action: { projects: Project[] }): State => {
   const TESTARRAY = [
     ...fillDummyTest(action.projects.length, 40),
     ...action.projects,
+    ...fillDummyTest(action.projects.length, 10000),
   ];
   const newState = adapter.setAll(TESTARRAY, state);
 

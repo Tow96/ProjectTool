@@ -1,5 +1,6 @@
 <div class="projects">
   <pt-tool-bar></pt-tool-bar>
+
   <ng-container *ngIf="vm$ | async as vm">
     <form class="projects__searchbar">
       <mat-form-field>
@@ -8,10 +9,16 @@
       </mat-form-field>
     </form>
 
-    <div class="projects__list">
-      <div @card *ngFor="let project of vm.projects">
-        <pt-projectcard [project]="project"></pt-projectcard>
+    <cdk-virtual-scroll-viewport class="projects__list" [itemSize]="rowHeight">
+      <div
+        class="project__row"
+        *cdkVirtualFor="let projectchunk of vm.projects"
+      >
+        <!-- <div @card *ngFor="let project of projectchunk"> -->
+        <div *ngFor="let project of projectchunk">
+          <pt-projectcard [project]="project"></pt-projectcard>
+        </div>
       </div>
-    </div>
+    </cdk-virtual-scroll-viewport>
   </ng-container>
 </div>
