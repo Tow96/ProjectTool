@@ -59,16 +59,7 @@ export const fillDummyTest = (startid: number, amount: number): Project[] => {
 };
 
 const setProjects = (state: State, action: { projects: Project[] }): State => {
-  // TODO: Remove this
-  const TESTARRAY = [
-    ...fillDummyTest(action.projects.length, 40),
-    ...action.projects,
-    ...fillDummyTest(action.projects.length, 10000),
-  ];
-  const newState = adapter.setAll(TESTARRAY, state);
-
-  // TODO: Re-enable this
-  // const newState = adapter.setAll(action.projects, state);
+  const newState = adapter.setAll(action.projects, state);
 
   return {
     ...newState,
