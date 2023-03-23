@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ToolBarComponent } from '../../../core';
 import { ProjectcardComponent } from '../../components';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [MainComponent],
@@ -18,6 +19,7 @@ import { ProjectcardComponent } from '../../components';
     RouterModule.forChild([{ path: '', component: MainComponent }]),
     CommonModule,
     ScrollingModule,
+    ReactiveFormsModule,
     ProjectcardComponent,
 
     MatFormFieldModule,

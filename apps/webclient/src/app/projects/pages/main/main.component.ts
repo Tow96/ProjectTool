@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { ProjectActions, ProjectViewModels } from '../../data';
 import { MainViewModel, ScreenSizeColumns } from '../../utils';
 import * as animations from './main.animations';
@@ -13,16 +14,31 @@ import * as animations from './main.animations';
 })
 export class MainComponent implements OnInit {
   vm$?: Observable<MainViewModel>;
+  searchForm$?: Observable<FormGroup>;
+
   screenSize = this.getScreenSize();
   rowHeight = this.getRowHeight();
 
-  constructor(private readonly store: Store) {}
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly store: Store
+  ) {}
 
   ngOnInit() {
+    this.store.dispatch(ProjectActions.loadProjects());
+
     this.vm$ = this.store.select(
       ProjectViewModels.selectMainViewModel(this.screenSize)
     );
-    this.store.dispatch(ProjectActions.loadProjects());
+    this.searchForm$ = this.store
+      .select(ProjectViewModels.selectMainViewModel(this.screenSize))
+      .pipe(
+        map((x) =>
+          this.fb.group({
+            search: this.fb.control(x.searchInput),
+          })
+        )
+      );
   }
 
   fillRow(length: number): number[] {
@@ -68,5 +84,15 @@ export class MainComponent implements OnInit {
         ProjectViewModels.selectMainViewModel(newSize)
       );
     }
+  }
+
+  onInputKeyUp(form: FormGroup) {
+    const values = form.value;
+
+    this.store.dispatch(
+      ProjectActions.updateSearchForm({
+        searchInput: values.search,
+      })
+    );
   }
 }

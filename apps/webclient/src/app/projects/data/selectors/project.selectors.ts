@@ -24,3 +24,8 @@ export const selectLoadState = createSelector(selectProjectState, (state) => ({
   loaded: state.loaded,
   loading: state.loading,
 }));
+
+export const selectSearchInput = createSelector(
+  selectProjectState,
+  (state) => state.searchInput
+);

@@ -20,3 +20,8 @@ export const loadProjectsFailure = createAction(
   '[Project Effects] Load Projects Failure',
   props<{ message: string }>()
 );
+
+export const updateSearchForm = createAction(
+  '[Projects Page] Update Search Form',
+  props<{ searchInput: string }>()
+);

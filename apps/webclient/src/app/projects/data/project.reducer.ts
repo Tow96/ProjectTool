@@ -9,6 +9,7 @@ export interface State extends EntityState<Project> {
   lastUpdated: Date;
   loaded: boolean;
   loading: boolean;
+  searchInput: string;
 }
 
 export const adapter: EntityAdapter<Project> = createEntityAdapter<Project>();
@@ -17,6 +18,7 @@ export const initialState: State = adapter.getInitialState({
   lastUpdated: new Date(0, 0, 0),
   loaded: false,
   loading: false,
+  searchInput: '',
 });
 
 export const reducer = createReducer(
@@ -39,7 +41,12 @@ export const reducer = createReducer(
   // Set projects
   on(ProjectActions.loadProjectsSuccess, (state, action) =>
     setProjects(state, action)
-  )
+  ),
+  // Update search form
+  on(ProjectActions.updateSearchForm, (state, action) => ({
+    ...state,
+    searchInput: action.searchInput,
+  }))
 );
 
 export const { selectIds, selectEntities, selectAll, selectTotal } =

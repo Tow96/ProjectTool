@@ -2,10 +2,18 @@
   <pt-tool-bar></pt-tool-bar>
 
   <ng-container *ngIf="vm$ | async as vm">
-    <form class="projects__searchbar">
+    <form
+      class="projects__searchbar"
+      *ngIf="searchForm$ | async as searchForm"
+      [formGroup]="searchForm"
+    >
       <mat-form-field>
         <mat-label>Search</mat-label>
-        <input matInput />
+        <input
+          matInput
+          (keyup)="onInputKeyUp(searchForm)"
+          formControlName="search"
+        />
       </mat-form-field>
     </form>
 
