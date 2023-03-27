@@ -10,6 +10,22 @@
 
 .projects__searchbar {
   padding: 20px 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projects__searchbar__input {
+  flex: 1;
+  max-width: 400px;
+}
+
+.full__width__input {
+  width: 100%;
+}
+
+.projects__searchbar__button {
+  margin: 0 0 15px 10px;
 }
 
 .projects__list {

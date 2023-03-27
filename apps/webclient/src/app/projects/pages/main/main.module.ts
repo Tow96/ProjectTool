@@ -12,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { ToolBarComponent } from '../../../core';
 import { ProjectcardComponent } from '../../components';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [MainComponent],
@@ -24,6 +26,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
     MatFormFieldModule,
     MatInputModule,
+    MatButtonModule,
+    MatIconModule,
 
     ToolBarComponent,
   ],

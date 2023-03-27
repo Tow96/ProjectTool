@@ -7,14 +7,35 @@
       *ngIf="searchForm$ | async as searchForm"
       [formGroup]="searchForm"
     >
-      <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input
-          matInput
-          (keyup)="onInputKeyUp(searchForm)"
-          formControlName="search"
-        />
-      </mat-form-field>
+      <div class="projects__searchbar__input">
+        <mat-form-field class="full__width__input">
+          <mat-label>Search</mat-label>
+          <input
+            matInput
+            (keyup)="onInputKeyUp(searchForm)"
+            formControlName="search"
+          />
+        </mat-form-field>
+      </div>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="projects__searchbar__button"
+      >
+        <mat-icon>filter_alt</mat-icon>
+        Filters
+      </button>
+      <!--
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="projects__searchbar__button"
+      >
+        <mat-icon>filter_alt</mat-icon>
+        Filters
+      </button> -->
     </form>
 
     <cdk-virtual-scroll-viewport class="projects__list" [itemSize]="rowHeight">
