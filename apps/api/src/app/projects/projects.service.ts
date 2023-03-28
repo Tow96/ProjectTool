@@ -99,7 +99,8 @@ export class ProjectService {
     const coldFolders = fs.readdirSync(this.COLD_FOLDER);
 
     const isInHot = hotFolders.findIndex((x) => x === input.location) > -1;
-    const isInCold = coldFolders.findIndex((x) => x === input.location) > -1;
+    const isInCold =
+      coldFolders.findIndex((x) => x === `${input.location}.zip`) > -1;
 
     let status = ProjectStatus.NOTFOUND;
 
@@ -152,13 +153,19 @@ export class ProjectService {
     const output = [...input];
 
     folders.forEach((folder) => {
-      if (folder !== THUMBNAILFOLDER) {
+      const noExtFolder =
+        folder.lastIndexOf('.') > 0
+          ? folder.substring(0, folder.lastIndexOf('.'))
+          : folder;
+
+      if (noExtFolder !== THUMBNAILFOLDER) {
         const isRegistered =
-          output.findIndex((x) => x.location === folder) > -1;
+          output.findIndex((x) => x.location === noExtFolder) > -1;
+
         if (!isRegistered) {
           output.push({
             id: -1 * output.length,
-            location: folder,
+            location: noExtFolder,
             status: ProjectStatus.UNREGISTERED,
           } as ProjectEntity);
         }
