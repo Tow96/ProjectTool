@@ -10,6 +10,7 @@ import { Project, ProjectStatus } from '@pt/models';
 // Misc.
 import { environment } from '../../../../environments/environment';
 import { CommonModule } from '@angular/common';
+import { ProjectHelpers } from '../../utils';
 
 @Component({
   selector: 'pt-projectcard',
@@ -52,16 +53,7 @@ export class ProjectcardComponent {
 
   getStatus(): string {
     if (!this.project) return 'NO PROJECT STATUS';
-    switch (this.project.status) {
-      case ProjectStatus.ACTIVE || ProjectStatus.BOTH:
-        return 'Active';
-      case ProjectStatus.ARCHIVED:
-        return 'Archived';
-      case ProjectStatus.UNREGISTERED:
-        return 'Unregistered';
-      default:
-        return 'Lost';
-    }
+    return ProjectHelpers.getStatusText(this.project.status);
   }
 
   onImgLoad(): void {
