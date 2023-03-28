@@ -61,3 +61,14 @@ body {
 * {
   transition: background-color 500ms ease;
 }
+
+cdk-virtual-scroll-viewport::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent;
+}
+
+cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #555;
+}
