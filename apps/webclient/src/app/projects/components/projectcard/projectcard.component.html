@@ -1,10 +1,10 @@
 <mat-card>
-  <mat-card-header class="card__header text-oneline">
+  <mat-card-header class="card__header text-oneline" (click)="onCardClick()">
     <mat-card-title>
       {{ getProjectName() }}
     </mat-card-title>
   </mat-card-header>
-  <div class="card__img">
+  <div class="card__img" (click)="onCardClick()">
     <div *ngIf="loading" class="card__img__spinner">
       <mat-spinner></mat-spinner>
     </div>
@@ -19,7 +19,6 @@
   </div>
   <mat-card-content class="card_content">
     {{ getStatus() }}
-    <!-- <p>{{ project?.description }}</p> -->
   </mat-card-content>
   <!-- <mat-card-actions>
     <button mat-button>A</button>

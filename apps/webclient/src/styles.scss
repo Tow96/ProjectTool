@@ -20,7 +20,7 @@
 // @include mat.checkbox-theme(dark.$webclient-dark-theme);
 // @include mat.chips-theme(dark.$webclient-dark-theme);
 // @include mat.datepicker-theme(dark.$webclient-dark-theme);
-// @include mat.dialog-theme(dark.$webclient-dark-theme);
+@include mat.dialog-theme(dark.$webclient-dark-theme);
 // @include mat.divider-theme(dark.$webclient-dark-theme);
 // @include mat.expansion-theme(dark.$webclient-dark-theme);
 @include mat.form-field-theme(dark.$webclient-dark-theme);

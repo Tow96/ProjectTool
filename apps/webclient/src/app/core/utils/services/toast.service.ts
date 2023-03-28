@@ -11,7 +11,7 @@ export class ToastService {
       horizontalPosition: 'right',
       verticalPosition: 'top',
       duration: 3000,
-      panelClass: [style],
+      panelClass: ['custom-snackbar', style],
     });
   }
 
