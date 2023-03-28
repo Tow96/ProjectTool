@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 import { Project } from '@pt/models';
-import { MainViewModel, ScreenSizeColumns } from '../../utils';
+import { MainViewModel, ProjectHelpers, ScreenSizeColumns } from '../../utils';
 import * as ProjectSelectors from './project.selectors';
 
 export const selectMainViewModel = (
@@ -10,17 +10,24 @@ export const selectMainViewModel = (
     ProjectSelectors.selectAll,
     ProjectSelectors.selectSearchInput,
     (projects, searchInput): MainViewModel => {
-      const keywords = searchInput.toLowerCase().split(' ');
-      const filteredProjects: Project[] = [];
-      projects.forEach((x) => {
-        const stringSearch = `${x.name},${x.location}`.toLowerCase();
-        for (let i = 0; i < keywords.length; i++) {
-          if (stringSearch.includes(keywords[i])) {
-            filteredProjects.push(x);
-            break;
+      let filteredProjects = [...projects];
+
+      // Keyword filter
+      if (searchInput.trim() !== '') {
+        const keywords = searchInput.toLowerCase().split(' ');
+        filteredProjects = filteredProjects.filter((x) => {
+          const stringSearch = `${x.name},${
+            x.location
+          },${ProjectHelpers.getStatusText(x.status)}`.toLowerCase();
+          for (let i = 0; i < keywords.length; i++) {
+            const keyword = keywords[i];
+
+            if (keyword !== '' && stringSearch.includes(keyword)) return true;
           }
-        }
-      });
+
+          return false;
+        });
+      }
 
       const chunkSize = ScreenSizeColumns[screenSize];
       const chunkedProjects: Project[][] = [];

@@ -17,21 +17,16 @@
 
 .projects__searchbar__input {
   flex: 1;
-  max-width: 400px;
+  max-width: 800px;
 }
 
 .full__width__input {
   width: 100%;
 }
 
-.projects__searchbar__button {
-  margin: 0 0 15px 10px;
-}
-
 .projects__list {
   padding-left: 16px;
   height: 100%;
-  // overflow-y: scroll;
 }
 
 .project__row {
