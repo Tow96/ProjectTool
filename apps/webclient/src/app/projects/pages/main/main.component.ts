@@ -18,7 +18,7 @@ import * as animations from './main.animations';
   selector: 'pt-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
-  animations: [animations.cardAnimation],
+  animations: [animations.cardAnimation, animations.spinnerAnimation],
 })
 export class MainComponent implements OnInit {
   vm$?: Observable<MainViewModel>;

@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ToolBarComponent } from '../../../core';
 import { ProjectcardComponent } from '../../components';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [MainComponent],
@@ -24,6 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
     MatFormFieldModule,
     MatInputModule,
+    MatProgressSpinnerModule,
 
     ToolBarComponent,
   ],

@@ -2,6 +2,7 @@
   <pt-tool-bar></pt-tool-bar>
 
   <ng-container *ngIf="vm$ | async as vm">
+    <!-- Search form -->
     <form
       class="projects__searchbar"
       *ngIf="searchForm$ | async as searchForm"
@@ -10,30 +11,38 @@
       <div class="projects__searchbar__input">
         <mat-form-field class="full__width__input">
           <mat-label>Search</mat-label>
-          <input
-            matInput
-            (keyup)="onInputKeyUp(searchForm)"
-            formControlName="search"
-          />
+          <input matInput (keyup)="onInputKeyUp(searchForm)" formControlName="search" />
         </mat-form-field>
       </div>
     </form>
 
-    <cdk-virtual-scroll-viewport class="projects__list" [itemSize]="rowHeight">
-      <div
-        class="project__row"
-        *cdkVirtualFor="let projectchunk of vm.projects"
-      >
-        <!-- projects -->
-        <div *ngFor="let project of projectchunk">
-          <pt-projectcard
-            [project]="project"
-            (showDetails)="onCardDetails($event)"
-          ></pt-projectcard>
-        </div>
-        <!-- Filler in case there are not enough projects to fill the row -->
-        <div *ngFor="let i of getRowFiller(projectchunk.length)"></div>
+    <!-- Project list -->
+    <div class="projects__list">
+      <!-- Loading spinner -->
+      <div @spinner class="projects__list__loading" *ngIf="vm.loading">
+        <mat-spinner></mat-spinner>
       </div>
-    </cdk-virtual-scroll-viewport>
+
+      <!-- No projects indicator -->
+      <div class="projects__list__noprojects" *ngIf="vm.loaded && vm.projects.length === 0">
+        <h3>No projects</h3>
+      </div>
+
+      <!-- VirtualScrolling list -->
+      <cdk-virtual-scroll-viewport class="projects__list_virtualscroll" [itemSize]="rowHeight">
+        <!-- Projects -->
+        <div class="project__row" *cdkVirtualFor="let projectchunk of vm.projects">
+          <div *ngFor="let project of projectchunk">
+            <pt-projectcard
+              [project]="project"
+              (showDetails)="onCardDetails($event)"
+            ></pt-projectcard>
+          </div>
+
+          <!-- Filler in case there are not enough projects to fill the row -->
+          <div *ngFor="let i of getRowFiller(projectchunk.length)"></div>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </div>
   </ng-container>
 </div>

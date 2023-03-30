@@ -25,8 +25,34 @@
 }
 
 .projects__list {
-  padding-left: 16px;
   height: 100%;
+  display: flex;
+  position: relative;
+}
+
+.projects__list__loading {
+  position: absolute;
+  z-index: 10;
+
+  margin: 0 16px;
+  width: calc(100% - 32px);
+  height: 100%;
+
+  background-color: #c8c8c87f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projects__list__noprojects {
+  padding: 0 16px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.projects__list_virtualscroll {
+  flex: 1;
 }
 
 .project__row {

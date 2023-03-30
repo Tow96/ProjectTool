@@ -7,7 +7,8 @@ export const selectMainViewModel = (screenSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   createSelector(
     ProjectSelectors.selectAll,
     ProjectSelectors.selectSearchInput,
-    (projects, searchInput): MainViewModel => {
+    ProjectSelectors.selectLoadState,
+    (projects, searchInput, loadState): MainViewModel => {
       let filteredProjects = [...projects];
 
       // Keyword filter
@@ -26,6 +27,8 @@ export const selectMainViewModel = (screenSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
       return {
         projects: chunkedProjects,
         searchInput,
+        loaded: loadState.loaded,
+        loading: loadState.loading,
       };
     }
   );
