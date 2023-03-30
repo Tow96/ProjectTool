@@ -3,10 +3,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { ProjectActions, ProjectApiService } from '../../data';
 
 export class EffectHelpers {
-  constructor(
-    private readonly store: Store,
-    private readonly api: ProjectApiService
-  ) {}
+  constructor(private readonly store: Store, private readonly api: ProjectApiService) {}
 
   // Pipes -----------------------------------------------------------
   getProjects$(): Observable<Action> {

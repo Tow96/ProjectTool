@@ -10,10 +10,5 @@ export default {
   coverageDirectory: '../../coverage/apps/api',
   collectCoverage: true,
   collectCoverageFrom: ['**/*.(t|j)s'],
-  coveragePathIgnorePatterns: [
-    'jest.config.ts',
-    '.module.ts',
-    'main.ts',
-    '.routing.ts',
-  ],
+  coveragePathIgnorePatterns: ['jest.config.ts', '.module.ts', 'main.ts', '.routing.ts'],
 };

@@ -3,9 +3,7 @@ import { Project } from '@pt/models';
 import { MainViewModel, ProjectHelpers, ScreenSizeColumns } from '../../utils';
 import * as ProjectSelectors from './project.selectors';
 
-export const selectMainViewModel = (
-  screenSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-) =>
+export const selectMainViewModel = (screenSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl') =>
   createSelector(
     ProjectSelectors.selectAll,
     ProjectSelectors.selectSearchInput,
@@ -14,10 +12,7 @@ export const selectMainViewModel = (
 
       // Keyword filter
       if (searchInput.trim() !== '') {
-        filteredProjects = ProjectHelpers.filterProjects(
-          searchInput,
-          filteredProjects
-        );
+        filteredProjects = ProjectHelpers.filterProjects(searchInput, filteredProjects);
       }
 
       const chunkSize = ScreenSizeColumns[screenSize];

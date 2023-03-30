@@ -33,15 +33,12 @@ export const reducer = createReducer(
     (state) => ({ ...state, loading: false })
   ),
   // Set loaded
-  on(
-    ProjectActions.loadProjectsCancelled,
-    ProjectActions.loadProjectsSuccess,
-    (state) => ({ ...state, loaded: true })
-  ),
+  on(ProjectActions.loadProjectsCancelled, ProjectActions.loadProjectsSuccess, (state) => ({
+    ...state,
+    loaded: true,
+  })),
   // Set projects
-  on(ProjectActions.loadProjectsSuccess, (state, action) =>
-    setProjects(state, action)
-  ),
+  on(ProjectActions.loadProjectsSuccess, (state, action) => setProjects(state, action)),
   // Update search form
   on(ProjectActions.updateSearchForm, (state, action) => ({
     ...state,
@@ -49,8 +46,7 @@ export const reducer = createReducer(
   }))
 );
 
-export const { selectIds, selectEntities, selectAll, selectTotal } =
-  adapter.getSelectors();
+export const { selectIds, selectEntities, selectAll, selectTotal } = adapter.getSelectors();
 
 const setProjects = (state: State, action: { projects: Project[] }): State => {
   const newState = adapter.setAll(action.projects, state);

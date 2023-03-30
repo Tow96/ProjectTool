@@ -34,9 +34,7 @@ import { CreateProjectDto, EditProjectDto } from '../utils';
 @Controller()
 @ApiTags('Projects')
 export class ProjectsController {
-  constructor(
-    @Inject(ProjectService) private readonly projectRepo: ProjectService
-  ) {}
+  constructor(@Inject(ProjectService) private readonly projectRepo: ProjectService) {}
 
   @Post()
   @ApiOperation({ summary: 'Creates a new Project an image can be added' })
@@ -52,10 +50,7 @@ export class ProjectsController {
   ): Promise<Project> {
     const pid = req['x-log-id'];
 
-    const projectExists = await this.projectRepo.findProjectByLocation(
-      projectdto.location,
-      pid
-    );
+    const projectExists = await this.projectRepo.findProjectByLocation(projectdto.location, pid);
     if (projectExists !== null) {
       throw new HttpException(
         `Project with location "${projectdto.location}" already exists`,
@@ -95,26 +90,15 @@ export class ProjectsController {
     const pid = req['x-log-id'];
     const project = await this.projectRepo.findById(pid, id);
     if (project === null) {
-      throw new HttpException(
-        `Project with id: ${id} not found`,
-        HttpStatus.NOT_FOUND
-      );
+      throw new HttpException(`Project with id: ${id} not found`, HttpStatus.NOT_FOUND);
     }
-    return this.projectRepo.updateProject(
-      pid,
-      project,
-      data,
-      file?.filename || undefined
-    );
+    return this.projectRepo.updateProject(pid, project, data, file?.filename || undefined);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Removes a Project from the Database' })
   @ApiOkResponse({ description: 'The delete result' })
-  async deleteProject(
-    @Req() req: LogIdRequest,
-    @Param('id') id: number
-  ): Promise<DeleteResult> {
+  async deleteProject(@Req() req: LogIdRequest, @Param('id') id: number): Promise<DeleteResult> {
     const pid = req['x-log-id'];
     return this.projectRepo.deleteProject(pid, id);
   }

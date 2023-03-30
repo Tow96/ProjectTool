@@ -19,15 +19,9 @@ export class ThemeEffects {
   private defaultConfig = { dispatch: false };
 
   // Effects -------------------------------------------------------------------------------------
-  initialThemeEffect = createEffect(
-    () => this.initialThemePipe$(),
-    this.defaultConfig
-  );
+  initialThemeEffect = createEffect(() => this.initialThemePipe$(), this.defaultConfig);
 
-  toggleDarkModeEffect = createEffect(
-    () => this.toggleDarkModePipe$(),
-    this.defaultConfig
-  );
+  toggleDarkModeEffect = createEffect(() => this.toggleDarkModePipe$(), this.defaultConfig);
 
   // Functions ----------------------------------------------------------------------------------
   private initialThemePipe$(): Observable<unknown> {

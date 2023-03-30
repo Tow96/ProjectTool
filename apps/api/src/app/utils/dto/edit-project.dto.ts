@@ -4,14 +4,7 @@
  * Dto for creating projects
  */
 import { EditProject } from '@pt/models';
-import {
-  IsArray,
-  IsBoolean,
-  IsOptional,
-  IsString,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import { IsArray, IsBoolean, IsOptional, IsString, MinLength } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class EditProjectDto implements EditProject {

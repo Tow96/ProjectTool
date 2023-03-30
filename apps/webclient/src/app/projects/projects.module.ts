@@ -12,10 +12,7 @@ import { fromProjects, ProjectApiService, ProjectEffects } from './data';
   imports: [
     CommonModule,
     ProjectsRouting,
-    StoreModule.forFeature(
-      fromProjects.projectsFeatureKey,
-      fromProjects.reducer
-    ),
+    StoreModule.forFeature(fromProjects.projectsFeatureKey, fromProjects.reducer),
     EffectsModule.forFeature([ProjectEffects]),
   ],
   providers: [ProjectApiService],

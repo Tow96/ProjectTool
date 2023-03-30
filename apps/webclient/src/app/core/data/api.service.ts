@@ -19,38 +19,30 @@ export abstract class ApiService {
   };
 
   protected getMessage(uri: string): Observable<any> {
-    return this.http
-      .get(`${this.ROOTURL}/${uri}`, { headers: this.headers })
-      .pipe(
-        // retry(3),
-        catchError((error) => this.processError(error))
-      );
+    return this.http.get(`${this.ROOTURL}/${uri}`, { headers: this.headers }).pipe(
+      // retry(3),
+      catchError((error) => this.processError(error))
+    );
   }
 
   protected putMessage(uri: string, payload: any): Observable<any> {
-    return this.http
-      .put(`${this.ROOTURL}/${uri}`, payload, { headers: this.headers })
-      .pipe(
-        // retry(3),
-        catchError((error) => this.processError(error))
-      );
+    return this.http.put(`${this.ROOTURL}/${uri}`, payload, { headers: this.headers }).pipe(
+      // retry(3),
+      catchError((error) => this.processError(error))
+    );
   }
 
   protected postMessage(uri: string, payload: any): Observable<any> {
-    return this.http
-      .post(`${this.ROOTURL}/${uri}`, payload, { headers: this.headers })
-      .pipe(
-        // retry(3),
-        catchError((error) => this.processError(error))
-      );
+    return this.http.post(`${this.ROOTURL}/${uri}`, payload, { headers: this.headers }).pipe(
+      // retry(3),
+      catchError((error) => this.processError(error))
+    );
   }
 
   protected deleteMessage(uri: string): Observable<any> {
-    return this.http
-      .delete(`${this.ROOTURL}/${uri}`, { headers: this.headers })
-      .pipe(
-        // retry(3),
-        catchError((error) => this.processError(error))
-      );
+    return this.http.delete(`${this.ROOTURL}/${uri}`, { headers: this.headers }).pipe(
+      // retry(3),
+      catchError((error) => this.processError(error))
+    );
   }
 }

@@ -9,10 +9,7 @@ import { ProjectActions } from '..';
 
 @Injectable()
 export class ToastEffects {
-  constructor(
-    private readonly actions$: Actions,
-    private readonly toast: ToastService
-  ) {}
+  constructor(private readonly actions$: Actions, private readonly toast: ToastService) {}
 
   showErrorEffect = createEffect(() => this.showError$(), { dispatch: false });
 

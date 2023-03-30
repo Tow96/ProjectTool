@@ -13,9 +13,7 @@ import { DatabaseModule } from './database/database.module';
       isGlobal: true,
       validationSchema: Joi.object({
         // Basic
-        NODE_ENV: Joi.string()
-          .valid('development', 'production')
-          .default('development'),
+        NODE_ENV: Joi.string().valid('development', 'production').default('development'),
         PORT: Joi.number().default(3001),
         DISABLE_LOGGING: Joi.boolean().default(false),
         NAME: Joi.string().required(),

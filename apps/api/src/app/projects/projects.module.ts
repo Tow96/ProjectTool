@@ -12,11 +12,7 @@ import { ProjectsController } from './projects.controller';
 import { ProjectService } from './projects.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([ProjectEntity]),
-    LoggerModule,
-    ImageModule,
-  ],
+  imports: [TypeOrmModule.forFeature([ProjectEntity]), LoggerModule, ImageModule],
   controllers: [ProjectsController],
   providers: [ProjectService],
 })

@@ -20,16 +20,11 @@ export class StyleManagerService {
     }
   }
   private getLinkElementForKey(key: string) {
-    return (
-      this.getExistingLinkElementByKey(key) ||
-      this.createLinkElementWithKey(key)
-    );
+    return this.getExistingLinkElementByKey(key) || this.createLinkElementWithKey(key);
   }
 
   private getExistingLinkElementByKey(key: string) {
-    return document.head.querySelector(
-      `link[rel="stylesheet"].${this.getClassNameForKey(key)}`
-    );
+    return document.head.querySelector(`link[rel="stylesheet"].${this.getClassNameForKey(key)}`);
   }
 
   private createLinkElementWithKey(key: string) {

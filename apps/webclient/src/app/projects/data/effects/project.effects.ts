@@ -31,9 +31,7 @@ export class ProjectEffects {
   private loadProjects$(): Observable<Action> {
     return this.actions$.pipe(
       ofType(ProjectActions.loadProjects),
-      concatLatestFrom(() =>
-        this.store.select(ProjectSelectors.selectLastUpdated)
-      ),
+      concatLatestFrom(() => this.store.select(ProjectSelectors.selectLastUpdated)),
       filter(([, cache]) => this.helpers.validateProjectCache(cache)),
       switchMap(() => this.helpers.getProjects$())
     );

@@ -33,10 +33,7 @@ export class ProjectService {
     project: CreateProjectDto,
     fileName?: string
   ): Promise<ProjectEntity> {
-    this.logger.pidLog(
-      pid,
-      `Creating project ${project.name} under location ${project.location}`
-    );
+    this.logger.pidLog(pid, `Creating project ${project.name} under location ${project.location}`);
 
     const newProject = await this.projectRepo.save({
       ...project,
@@ -48,10 +45,7 @@ export class ProjectService {
       this.imager.keepImage(pid, fileName);
     }
 
-    this.logger.pidLog(
-      pid,
-      `Created project: ${newProject.name} with id: ${newProject.id}`
-    );
+    this.logger.pidLog(pid, `Created project: ${newProject.name} with id: ${newProject.id}`);
 
     return newProject;
   }
@@ -61,10 +55,7 @@ export class ProjectService {
 
     const project = await this.findById(pid, id);
     if (project === null) {
-      throw new HttpException(
-        `Project with id: ${id} not found`,
-        HttpStatus.NOT_FOUND
-      );
+      throw new HttpException(`Project with id: ${id} not found`, HttpStatus.NOT_FOUND);
     }
 
     if (project.imageLocation) {
@@ -86,10 +77,7 @@ export class ProjectService {
     return this.getProjectStatus(dbProject);
   }
 
-  async findProjectByLocation(
-    location: string,
-    pid: string
-  ): Promise<ProjectEntity | null> {
+  async findProjectByLocation(location: string, pid: string): Promise<ProjectEntity | null> {
     this.logger.pidLog(pid, `Checking if project with location: ${location}`);
     return this.projectRepo.findOneBy({ location });
   }
@@ -99,8 +87,7 @@ export class ProjectService {
     const coldFolders = fs.readdirSync(this.COLD_FOLDER);
 
     const isInHot = hotFolders.findIndex((x) => x === input.location) > -1;
-    const isInCold =
-      coldFolders.findIndex((x) => x === `${input.location}.zip`) > -1;
+    const isInCold = coldFolders.findIndex((x) => x === `${input.location}.zip`) > -1;
 
     let status = ProjectStatus.NOTFOUND;
 
@@ -131,36 +118,24 @@ export class ProjectService {
 
     this.logger.pidLog(pid, `Adding unregistered cold folders`);
     const coldFolders = fs.readdirSync(this.COLD_FOLDER);
-    const coldAndDbProjects = this.addFoldersAsUnregistered(
-      coldFolders,
-      dbProjects
-    );
+    const coldAndDbProjects = this.addFoldersAsUnregistered(coldFolders, dbProjects);
 
     this.logger.pidLog(pid, `Adding unregistered hot folders`);
     const hotFolders = fs.readdirSync(this.HOT_FOLDER);
-    const allProjects = this.addFoldersAsUnregistered(
-      hotFolders,
-      coldAndDbProjects
-    );
+    const allProjects = this.addFoldersAsUnregistered(hotFolders, coldAndDbProjects);
 
     return allProjects;
   }
 
-  private addFoldersAsUnregistered(
-    folders: string[],
-    input: ProjectEntity[]
-  ): ProjectEntity[] {
+  private addFoldersAsUnregistered(folders: string[], input: ProjectEntity[]): ProjectEntity[] {
     const output = [...input];
 
     folders.forEach((folder) => {
       const noExtFolder =
-        folder.lastIndexOf('.') > 0
-          ? folder.substring(0, folder.lastIndexOf('.'))
-          : folder;
+        folder.lastIndexOf('.') > 0 ? folder.substring(0, folder.lastIndexOf('.')) : folder;
 
       if (noExtFolder !== THUMBNAILFOLDER) {
-        const isRegistered =
-          output.findIndex((x) => x.location === noExtFolder) > -1;
+        const isRegistered = output.findIndex((x) => x.location === noExtFolder) > -1;
 
         if (!isRegistered) {
           output.push({

@@ -1,11 +1,4 @@
-import {
-  animate,
-  animation,
-  sequence,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { animate, animation, sequence, style, transition, trigger } from '@angular/animations';
 
 export const fallIn = animation([
   style({ opacity: 0 }),
@@ -15,10 +8,7 @@ export const fallIn = animation([
 export const bounceIn = sequence([
   style({ transform: 'translateY(-10px)' }),
   animate('200ms linear', style({ transform: 'translateY(0)' })),
-  animate(
-    '100ms cubic-bezier(0,0,0,.5)',
-    style({ transform: 'translateY(-4px)' })
-  ),
+  animate('100ms cubic-bezier(0,0,0,.5)', style({ transform: 'translateY(-4px)' })),
   animate('80ms cubic-bezier(0,0,1,0)', style({ transform: 'translateY(0)' })),
 ]);
 

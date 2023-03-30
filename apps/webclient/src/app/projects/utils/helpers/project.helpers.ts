@@ -1,19 +1,14 @@
 import { Project, ProjectStatus } from '@pt/models';
 
-export const filterProjects = (
-  searchInput: string,
-  projects: Project[]
-): Project[] => {
+export const filterProjects = (searchInput: string, projects: Project[]): Project[] => {
   const keywords = searchInput.toLowerCase().split(' ');
 
   return projects.filter((project) => {
-    const serializedProject = `${project.name},${
-      project.location
-    }, ${getStatusText(project.status)}`.toLowerCase();
+    let serializedProject = `${project.name},${project.location},${getStatusText(project.status)}`;
+    serializedProject = serializedProject.toLowerCase();
 
     for (let i = 0; i < keywords.length; i++) {
-      if (keywords[i] !== '' && serializedProject.includes(keywords[i]))
-        return true;
+      if (keywords[i] !== '' && serializedProject.includes(keywords[i])) return true;
     }
 
     return false;

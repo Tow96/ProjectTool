@@ -12,9 +12,7 @@ export class GlobalErrorHandlerService implements ErrorHandler {
     // Gets the message depending if the error is sync or async:
     if (error.rejection) error = error.rejection;
 
-    this.toast.warn(
-      error.message || 'No message provided, see console for details.'
-    );
+    this.toast.warn(error.message || 'No message provided, see console for details.');
   }
 }
 
