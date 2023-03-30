@@ -11,6 +11,7 @@ import { ProjectActions } from '..';
 import { ProjectSelectors } from '..';
 // Misc
 import { EffectHelpers } from '../../utils';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable()
 export class ProjectEffects {
@@ -19,9 +20,10 @@ export class ProjectEffects {
   constructor(
     private readonly actions$: Actions,
     private readonly store: Store,
-    private readonly api: ProjectApiService
+    private readonly api: ProjectApiService,
+    private readonly dialogs: MatDialog
   ) {
-    this.helpers = new EffectHelpers(store, api);
+    this.helpers = new EffectHelpers(store, api, dialogs);
   }
 
   // Effects ------------------------------------------------------

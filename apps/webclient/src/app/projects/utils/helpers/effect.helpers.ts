@@ -1,10 +1,15 @@
+import { MatDialog } from '@angular/material/dialog';
 import { Action, Store } from '@ngrx/store';
 import { EditProject } from '@pt/models';
 import { catchError, map, Observable, of } from 'rxjs';
 import { ProjectActions, ProjectApiService } from '../../data';
 
 export class EffectHelpers {
-  constructor(private readonly store: Store, private readonly api: ProjectApiService) {}
+  constructor(
+    private readonly store: Store,
+    private readonly api: ProjectApiService,
+    private readonly dialogs: MatDialog
+  ) {}
 
   // Pipes -----------------------------------------------------------
   getProjects$(): Observable<Action> {
@@ -16,11 +21,12 @@ export class EffectHelpers {
 
   updateProject$(id: number, changes: EditProject): Observable<Action> {
     return this.api.updateProject(id, changes).pipe(
-      map((project) =>
-        ProjectActions.updateProjectSuccess({
+      map((project) => {
+        this.dialogs.closeAll();
+        return ProjectActions.updateProjectSuccess({
           project: { id: project.id, changes: project },
-        })
-      ),
+        });
+      }),
       catchError((e) => this.updateProjectFailure$(e))
     );
   }

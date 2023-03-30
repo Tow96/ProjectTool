@@ -7,6 +7,7 @@ import { StoreModule } from '@ngrx/store';
 import { ProjectsRouting } from './projects.routing';
 // Data access
 import { fromProjects, ProjectApiService, ProjectEffects, ToastEffects } from './data';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { fromProjects, ProjectApiService, ProjectEffects, ToastEffects } from '.
     ProjectsRouting,
     StoreModule.forFeature(fromProjects.projectsFeatureKey, fromProjects.reducer),
     EffectsModule.forFeature([ProjectEffects, ToastEffects]),
+    MatDialogModule,
   ],
   providers: [ProjectApiService],
 })
