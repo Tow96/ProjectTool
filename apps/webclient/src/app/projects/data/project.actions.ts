@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Project } from '@pt/models';
+import { EditProject, Project } from '@pt/models';
 
 export const loadProjects = createAction('[Projects Page] Load Projects');
 
@@ -18,6 +18,21 @@ export const loadProjectsSuccess = createAction(
 
 export const loadProjectsFailure = createAction(
   '[Project Effects] Load Projects Failure',
+  props<{ message: string }>()
+);
+
+export const updateProject = createAction(
+  '[Project Form] Update Project',
+  props<{ project: EditProject }>()
+);
+
+export const updateProjectSuccess = createAction(
+  '[Project Effects] Update Project Success',
+  props<{ project: Project }>()
+);
+
+export const updateProjectFailure = createAction(
+  '[Project Effects] Update Project Failure',
   props<{ message: string }>()
 );
 

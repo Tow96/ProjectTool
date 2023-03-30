@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 // Services
 import { StyleManagerService } from '../../utils';
 import { ThemeActions } from '../actions';
@@ -16,27 +16,33 @@ export class ThemeEffects {
     private readonly styles: StyleManagerService
   ) {}
 
-  setInitialTheme$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(ThemeActions.setInitialMode),
-        concatLatestFrom(() =>
-          this.store.select(ThemeSelectors.selectDarkMode)
-        ),
-        tap(([, dark]) => this.styles.setDarkTheme(dark))
-      ),
-    { dispatch: false }
+  private defaultConfig = { dispatch: false };
+
+  // Effects -------------------------------------------------------------------------------------
+  initialThemeEffect = createEffect(
+    () => this.initialThemePipe$(),
+    this.defaultConfig
   );
 
-  toggleDarkMode$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(ThemeActions.toggleDarkMode),
-        concatLatestFrom(() =>
-          this.store.select(ThemeSelectors.selectDarkMode)
-        ),
-        tap(([, dark]) => this.styles.setDarkTheme(dark))
-      ),
-    { dispatch: false }
+  toggleDarkModeEffect = createEffect(
+    () => this.toggleDarkModePipe$(),
+    this.defaultConfig
   );
+
+  // Functions ----------------------------------------------------------------------------------
+  private initialThemePipe$(): Observable<unknown> {
+    return this.actions$.pipe(
+      ofType(ThemeActions.setInitialMode),
+      concatLatestFrom(() => this.store.select(ThemeSelectors.selectDarkMode)),
+      tap(([, dark]) => this.styles.setDarkTheme(dark))
+    );
+  }
+
+  private toggleDarkModePipe$(): Observable<unknown> {
+    return this.actions$.pipe(
+      ofType(ThemeActions.toggleDarkMode),
+      concatLatestFrom(() => this.store.select(ThemeSelectors.selectDarkMode)),
+      tap(([, dark]) => this.styles.setDarkTheme(dark))
+    );
+  }
 }

@@ -14,19 +14,10 @@ export const selectMainViewModel = (
 
       // Keyword filter
       if (searchInput.trim() !== '') {
-        const keywords = searchInput.toLowerCase().split(' ');
-        filteredProjects = filteredProjects.filter((x) => {
-          const stringSearch = `${x.name},${
-            x.location
-          },${ProjectHelpers.getStatusText(x.status)}`.toLowerCase();
-          for (let i = 0; i < keywords.length; i++) {
-            const keyword = keywords[i];
-
-            if (keyword !== '' && stringSearch.includes(keyword)) return true;
-          }
-
-          return false;
-        });
+        filteredProjects = ProjectHelpers.filterProjects(
+          searchInput,
+          filteredProjects
+        );
       }
 
       const chunkSize = ScreenSizeColumns[screenSize];

@@ -18,6 +18,18 @@
               }
             ]
           }
+        ],
+        "max-depth": [
+          "error",
+          {
+            "max": 2
+          }
+        ],
+        "max-nested-callbacks": [
+          "error",
+          {
+            "max": 1
+          }
         ]
       }
     },
@@ -36,7 +48,9 @@
       "env": {
         "jest": true
       },
-      "rules": {}
+      "rules": {
+        "max-nested-callbacks": "off"
+      }
     }
   ]
 }

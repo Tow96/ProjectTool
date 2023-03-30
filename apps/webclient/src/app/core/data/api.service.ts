@@ -1,7 +1,7 @@
 // Libraries
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, ObservableInput, throwError } from 'rxjs';
 // Misc
 import { environment } from '../../../environments/environment';
 
@@ -12,8 +12,10 @@ export abstract class ApiService {
 
   constructor(private readonly http: HttpClient) {}
   private headers = { Accept: 'application/json', Pragma: 'no-cache' };
-  private processError = (error: any) => {
-    return error.error;
+
+  private processError = (error: any): ObservableInput<any> => {
+    console.error(error);
+    return throwError(() => error.error);
   };
 
   protected getMessage(uri: string): Observable<any> {
@@ -21,10 +23,7 @@ export abstract class ApiService {
       .get(`${this.ROOTURL}/${uri}`, { headers: this.headers })
       .pipe(
         // retry(3),
-        catchError((error) => {
-          console.error(error);
-          return throwError(() => this.processError(error));
-        })
+        catchError((error) => this.processError(error))
       );
   }
 
@@ -33,10 +32,7 @@ export abstract class ApiService {
       .put(`${this.ROOTURL}/${uri}`, payload, { headers: this.headers })
       .pipe(
         // retry(3),
-        catchError((error) => {
-          console.error(error);
-          return throwError(() => this.processError(error));
-        })
+        catchError((error) => this.processError(error))
       );
   }
 
@@ -45,10 +41,7 @@ export abstract class ApiService {
       .post(`${this.ROOTURL}/${uri}`, payload, { headers: this.headers })
       .pipe(
         // retry(3),
-        catchError((error) => {
-          console.error(error);
-          return throwError(() => this.processError(error));
-        })
+        catchError((error) => this.processError(error))
       );
   }
 
@@ -57,10 +50,7 @@ export abstract class ApiService {
       .delete(`${this.ROOTURL}/${uri}`, { headers: this.headers })
       .pipe(
         // retry(3),
-        catchError((error) => {
-          console.error(error);
-          return throwError(() => this.processError(error));
-        })
+        catchError((error) => this.processError(error))
       );
   }
 }
