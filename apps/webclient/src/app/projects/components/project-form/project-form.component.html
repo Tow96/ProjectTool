@@ -25,12 +25,7 @@
 </form>
 <div mat-dialog-actions>
   <button mat-flat-button (click)="onCancelClick()">Close</button>
-  <button
-    mat-flat-button
-    color="primary"
-    [disabled]="form.invalid"
-    (click)="onSaveClick()"
-  >
+  <button mat-flat-button color="primary" [disabled]="isSaveBttnDisabled()" (click)="onSaveClick()">
     Save
   </button>
 </div>

@@ -43,17 +43,27 @@ export class ProjectFormComponent {
     }
   }
 
-  private validateAndSave(): void {
+  private getChanges(): EditProject {
+    const changes: EditProject = {};
     if (this.form.valid) {
       const values = this.form.value;
-      const changes: EditProject = {};
       if (values.name !== this.data.name) changes.name = values.name;
       if (values.description !== this.data.description) changes.description = values.description;
-
-      if (Object.keys(changes).length > 0) {
-        this.store.dispatch(ProjectActions.updateProject({ id: this.data.id, changes }));
-      }
     }
+
+    return changes;
+  }
+
+  private validateAndSave(): void {
+    const changes = this.getChanges();
+
+    if (Object.keys(changes).length > 0) {
+      this.store.dispatch(ProjectActions.updateProject({ id: this.data.id, changes }));
+    }
+  }
+
+  isSaveBttnDisabled(): boolean {
+    return this.form.invalid || Object.keys(this.getChanges()).length === 0;
   }
 
   onCancelClick(): void {
