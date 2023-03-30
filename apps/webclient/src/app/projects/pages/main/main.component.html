@@ -26,10 +26,13 @@
       >
         <!-- projects -->
         <div *ngFor="let project of projectchunk">
-          <pt-projectcard [project]="project"></pt-projectcard>
+          <pt-projectcard
+            [project]="project"
+            (showDetails)="onCardDetails($event)"
+          ></pt-projectcard>
         </div>
         <!-- Filler in case there are not enough projects to fill the row -->
-        <div *ngFor="let i of fillRow(projectchunk.length)"></div>
+        <div *ngFor="let i of getRowFiller(projectchunk.length)"></div>
       </div>
     </cdk-virtual-scroll-viewport>
   </ng-container>

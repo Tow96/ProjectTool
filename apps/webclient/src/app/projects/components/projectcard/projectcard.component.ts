@@ -1,18 +1,17 @@
 // Libraries
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 // Modules
+import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // Services
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 // Models
 import { Project, ProjectStatus } from '@pt/models';
 // Misc.
 import { environment } from '../../../../environments/environment';
-import { CommonModule } from '@angular/common';
 import { ProjectHelpers } from '../../utils';
-import { ProjectFormComponent } from '../project-form/project-form.component';
 
 @Component({
   selector: 'pt-projectcard',
@@ -32,18 +31,12 @@ export class ProjectcardComponent {
   loading = true;
 
   @Input() project: Project | null = null;
-
-  constructor(public dialog: MatDialog) {}
-
-  private openForm(): void {
-    this.dialog.open(ProjectFormComponent, { data: this.project });
-  }
+  @Output() showDetails = new EventEmitter<Project | null>();
 
   // GET functions -----------------------------------------------------
   getProjectName(): string {
     if (!this.project) return 'No name';
-    if (this.project.status === ProjectStatus.UNREGISTERED)
-      return `/${this.project.location}`;
+    if (this.project.status === ProjectStatus.UNREGISTERED) return `/${this.project.location}`;
 
     return this.project.name || 'NO NAME';
   }
@@ -68,7 +61,7 @@ export class ProjectcardComponent {
 
   // ON functions -------------------------------------------------------
   onCardClick(): void {
-    this.openForm();
+    this.showDetails.next(this.project);
   }
 
   onImgLoad(): void {

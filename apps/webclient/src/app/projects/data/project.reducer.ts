@@ -43,7 +43,11 @@ export const reducer = createReducer(
   on(ProjectActions.updateSearchForm, (state, action) => ({
     ...state,
     searchInput: action.searchInput,
-  }))
+  })),
+  // Update a project
+  on(ProjectActions.updateProjectSuccess, (state, action) =>
+    adapter.updateOne(action.project, state)
+  )
 );
 
 export const { selectIds, selectEntities, selectAll, selectTotal } = adapter.getSelectors();

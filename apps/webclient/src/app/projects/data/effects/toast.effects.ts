@@ -16,8 +16,11 @@ export class ToastEffects {
   // --------------------------------------------------------------------------
   private showError$(): Observable<unknown> {
     return this.actions$.pipe(
-      ofType(ProjectActions.loadProjectsFailure),
-      tap((action) => this.toast.warn(action.message))
+      ofType(ProjectActions.loadProjectsFailure, ProjectActions.updateProjectFailure),
+      tap((action) => {
+        console.log('a');
+        this.toast.warn(action.message);
+      })
     );
   }
 }

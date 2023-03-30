@@ -26,14 +26,22 @@ export class ProjectEffects {
 
   // Effects ------------------------------------------------------
   loadProjectsEffect = createEffect(() => this.loadProjects$());
+  updateProjectEffect = createEffect(() => this.updateProject$());
 
-  // Functions ----------------------------------------------------
+  // Pipes ----------------------------------------------------
   private loadProjects$(): Observable<Action> {
     return this.actions$.pipe(
       ofType(ProjectActions.loadProjects),
       concatLatestFrom(() => this.store.select(ProjectSelectors.selectLastUpdated)),
       filter(([, cache]) => this.helpers.validateProjectCache(cache)),
       switchMap(() => this.helpers.getProjects$())
+    );
+  }
+
+  private updateProject$(): Observable<Action> {
+    return this.actions$.pipe(
+      ofType(ProjectActions.updateProject),
+      switchMap((action) => this.helpers.updateProject$(action.id, action.changes))
     );
   }
 }

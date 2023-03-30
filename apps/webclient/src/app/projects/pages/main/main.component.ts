@@ -1,8 +1,16 @@
+// Libraries
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
+// Services
+import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+// NGRX
 import { ProjectActions, ProjectViewModels } from '../../data';
+// Models
+import { Project } from '@pt/models';
+// Misc.
+import { ProjectFormComponent } from '../../components';
 import { MainViewModel, ScreenSizeColumns } from '../../utils';
 import * as animations from './main.animations';
 
@@ -21,15 +29,14 @@ export class MainComponent implements OnInit {
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly store: Store
+    private readonly store: Store,
+    public readonly dialog: MatDialog
   ) {}
 
   ngOnInit() {
     this.store.dispatch(ProjectActions.loadProjects());
 
-    this.vm$ = this.store.select(
-      ProjectViewModels.selectMainViewModel(this.screenSize)
-    );
+    this.vm$ = this.store.select(ProjectViewModels.selectMainViewModel(this.screenSize));
     this.searchForm$ = this.store
       .select(ProjectViewModels.selectMainViewModel(this.screenSize))
       .pipe(
@@ -41,7 +48,8 @@ export class MainComponent implements OnInit {
       );
   }
 
-  fillRow(length: number): number[] {
+  // get functions ------------------------------------------
+  getRowFiller(length: number): number[] {
     let fillerCount = ScreenSizeColumns[this.screenSize] - length;
     fillerCount = fillerCount >= 0 ? fillerCount : 0;
 
@@ -73,17 +81,9 @@ export class MainComponent implements OnInit {
     }
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.rowHeight = this.getRowHeight();
-
-    const newSize = this.getScreenSize();
-    if (newSize !== this.screenSize) {
-      this.screenSize = newSize;
-      this.vm$ = this.store.select(
-        ProjectViewModels.selectMainViewModel(newSize)
-      );
-    }
+  // on functions ------------------------------------------
+  onCardDetails(project: Project | null) {
+    this.dialog.open(ProjectFormComponent, { data: project });
   }
 
   onInputKeyUp(form: FormGroup) {
@@ -94,5 +94,16 @@ export class MainComponent implements OnInit {
         searchInput: values.search,
       })
     );
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.rowHeight = this.getRowHeight();
+
+    const newSize = this.getScreenSize();
+    if (newSize !== this.screenSize) {
+      this.screenSize = newSize;
+      this.vm$ = this.store.select(ProjectViewModels.selectMainViewModel(newSize));
+    }
   }
 }

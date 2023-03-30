@@ -1,4 +1,5 @@
 import { Action, Store } from '@ngrx/store';
+import { EditProject } from '@pt/models';
 import { catchError, map, Observable, of } from 'rxjs';
 import { ProjectActions, ProjectApiService } from '../../data';
 
@@ -13,6 +14,18 @@ export class EffectHelpers {
     );
   }
 
+  updateProject$(id: number, changes: EditProject): Observable<Action> {
+    return this.api.updateProject(id, changes).pipe(
+      map((project) =>
+        ProjectActions.updateProjectSuccess({
+          project: { id: project.id, changes: project },
+        })
+      ),
+      catchError((e) => this.updateProjectFailure$(e))
+    );
+  }
+
+  // Error processing pipes -------------------------------------------
   /*eslint-disable @typescript-eslint/no-explicit-any*/
   getProjectsFailure$(e: any): Observable<Action> {
     return of(
@@ -21,9 +34,18 @@ export class EffectHelpers {
       })
     );
   }
+
+  updateProjectFailure$(e: any): Observable<Action> {
+    return of(
+      ProjectActions.updateProjectFailure({
+        message: e.message || 'Failed updating project',
+      })
+    );
+  }
+
   /*eslint-enable @typescript-eslint/no-explicit-any*/
 
-  // Misc -------------------------------------------------------------
+  // Validation -------------------------------------------------------
   validateProjectCache(cache: Date): boolean {
     const cacheLongevity = 10 * 60 * 1000; // 10min in ms
 

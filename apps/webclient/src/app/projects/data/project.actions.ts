@@ -1,3 +1,4 @@
+import { Update } from '@ngrx/entity';
 import { createAction, props } from '@ngrx/store';
 import { EditProject, Project } from '@pt/models';
 
@@ -19,12 +20,12 @@ export const loadProjectsFailure = createAction(
 
 export const updateProject = createAction(
   '[Project Form] Update Project',
-  props<{ project: EditProject }>()
+  props<{ id: number; changes: EditProject }>()
 );
 
 export const updateProjectSuccess = createAction(
   '[Project Effects] Update Project Success',
-  props<{ project: Project }>()
+  props<{ project: Update<Project> }>()
 );
 
 export const updateProjectFailure = createAction(
