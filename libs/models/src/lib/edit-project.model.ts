@@ -2,5 +2,5 @@ export interface EditProject {
   name?: string;
   description?: string;
   tags?: string[];
-  removeImg?: boolean;
+  removeImg?: string;
 }

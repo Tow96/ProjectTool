@@ -24,6 +24,6 @@ export class EditProjectDto implements EditProject {
   tags: string[];
 
   @IsOptional()
-  @IsBoolean({ message: 'removeImg must be a boolean' })
-  removeImg = false;
+  @IsString({ message: 'removeImg must be a string' })
+  removeImg?: string;
 }
