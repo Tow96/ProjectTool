@@ -14,6 +14,7 @@ export const selectLastUpdated = createSelector(selectProjectState, (state) => s
 export const selectLoadState = createSelector(selectProjectState, (state) => ({
   loaded: state.loaded,
   loading: state.loading,
+  formLoading: state.formLoading,
 }));
 
 export const selectSearchInput = createSelector(selectProjectState, (state) => state.searchInput);

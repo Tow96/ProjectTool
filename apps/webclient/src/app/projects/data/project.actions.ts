@@ -20,7 +20,7 @@ export const loadProjectsFailure = createAction(
 
 export const updateProject = createAction(
   '[Project Form] Update Project',
-  props<{ id: number; changes: EditProject }>()
+  props<{ id: number; changes: EditProject; img?: File }>()
 );
 
 export const updateProjectSuccess = createAction(

@@ -19,8 +19,8 @@ export class EffectHelpers {
     );
   }
 
-  updateProject$(id: number, changes: EditProject): Observable<Action> {
-    return this.api.updateProject(id, changes).pipe(
+  updateProject$(id: number, changes: EditProject, img?: File): Observable<Action> {
+    return this.api.updateProject(id, changes, img).pipe(
       map((project) => {
         this.dialogs.closeAll();
         return ProjectActions.updateProjectSuccess({

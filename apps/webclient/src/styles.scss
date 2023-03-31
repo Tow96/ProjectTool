@@ -30,7 +30,7 @@
 // @include mat.list-theme(dark.$webclient-dark-theme);
 // @include mat.menu-theme(dark.$webclient-dark-theme);
 // @include mat.paginator-theme(dark.$webclient-dark-theme);
-// @include mat.progress-bar-theme(dark.$webclient-dark-theme);
+@include mat.progress-bar-theme(dark.$webclient-dark-theme);
 @include mat.progress-spinner-theme(dark.$webclient-dark-theme);
 // @include mat.radio-theme(dark.$webclient-dark-theme);
 // @include mat.select-theme(dark.$webclient-dark-theme);

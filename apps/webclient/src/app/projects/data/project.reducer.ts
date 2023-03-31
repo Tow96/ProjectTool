@@ -10,6 +10,7 @@ export interface State extends EntityState<Project> {
   loaded: boolean;
   loading: boolean;
   searchInput: string;
+  formLoading: boolean;
 }
 
 export const adapter: EntityAdapter<Project> = createEntityAdapter<Project>();
@@ -19,6 +20,7 @@ export const initialState: State = adapter.getInitialState({
   loaded: false,
   loading: false,
   searchInput: '',
+  formLoading: false,
 });
 
 export const reducer = createReducer(
@@ -30,6 +32,7 @@ export const reducer = createReducer(
     ProjectActions.loadProjectsCached,
     ProjectActions.loadProjectsCancelled,
     ProjectActions.loadProjectsSuccess,
+    ProjectActions.loadProjectsFailure,
     (state) => ({ ...state, loading: false })
   ),
   // Set loaded
@@ -47,7 +50,14 @@ export const reducer = createReducer(
   // Update a project
   on(ProjectActions.updateProjectSuccess, (state, action) =>
     adapter.updateOne(action.project, state)
-  )
+  ),
+  // Set form loading
+  on(ProjectActions.updateProject, (state) => ({ ...state, formLoading: true })),
+  // Stop form loading
+  on(ProjectActions.updateProjectFailure, ProjectActions.updateProjectSuccess, (state) => ({
+    ...state,
+    formLoading: false,
+  }))
 );
 
 export const { selectIds, selectEntities, selectAll, selectTotal } = adapter.getSelectors();

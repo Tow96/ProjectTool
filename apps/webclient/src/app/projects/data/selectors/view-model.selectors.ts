@@ -1,7 +1,17 @@
 import { createSelector } from '@ngrx/store';
 import { Project } from '@pt/models';
-import { MainViewModel, ProjectHelpers, ScreenSizeColumns } from '../../utils';
+import {
+  MainViewModel,
+  ProjectFormViewModel,
+  ProjectHelpers,
+  ScreenSizeColumns,
+} from '../../utils';
 import * as ProjectSelectors from './project.selectors';
+
+export const selectFormViewModel = createSelector(
+  ProjectSelectors.selectLoadState,
+  (loadState): ProjectFormViewModel => ({ loading: loadState.formLoading })
+);
 
 export const selectMainViewModel = (screenSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl') =>
   createSelector(

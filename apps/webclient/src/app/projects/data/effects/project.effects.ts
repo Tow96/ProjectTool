@@ -43,7 +43,7 @@ export class ProjectEffects {
   private updateProject$(): Observable<Action> {
     return this.actions$.pipe(
       ofType(ProjectActions.updateProject),
-      switchMap((action) => this.helpers.updateProject$(action.id, action.changes))
+      switchMap((action) => this.helpers.updateProject$(action.id, action.changes, action.img))
     );
   }
 }

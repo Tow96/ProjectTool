@@ -1,31 +1,70 @@
-<h3 mat-dialog-title>Edit Project</h3>
-<!-- <div mat-dialog-content>
-  <p>THIS IS A PROJECT FORM</p>
-</div> -->
-<form mat-dialog-content [formGroup]="form" (submit)="onFormSubmit()">
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input matInput formControlName="name" />
-  </mat-form-field>
-  <mat-form-field class="disabled">
-    <mat-label class="disabled">Location</mat-label>
-    <input matInput formControlName="location" class="disabled" />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Description</mat-label>
-    <textarea
-      matInput
-      formControlName="description"
-      cdkTextareaAutosize
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="1"
-      cdkAutosizeMaxRows="5"
-    ></textarea>
-  </mat-form-field>
-</form>
-<div mat-dialog-actions>
-  <button mat-flat-button (click)="onCancelClick()">Close</button>
-  <button mat-flat-button color="primary" [disabled]="isSaveBttnDisabled()" (click)="onSaveClick()">
-    Save
-  </button>
-</div>
+<ng-container *ngIf="vm$ | async as vm">
+  <!-- Title -->
+  <h3 mat-dialog-title>Edit Project</h3>
+
+  <!-- Content -->
+  <form
+    class="project__form"
+    [ngClass]="isFormLoading(vm.loading)"
+    mat-dialog-content
+    [formGroup]="form"
+    (submit)="onFormSubmit()"
+  >
+    <!-- Image -->
+    <div class="project__form__img">
+      <input class="project__form__img__input" type="file" (change)="onImageUpload($event)" />
+      <img *ngIf="isPreviewVisible()" class="project__form__img__preview" [src]="getPreviewUrl()" />
+    </div>
+
+    <!-- Inputs -->
+    <div class="project__form__inputs">
+      <!-- Name -->
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <!-- Location -->
+      <mat-form-field class="disabled">
+        <mat-label class="disabled">Location</mat-label>
+        <input matInput formControlName="location" class="disabled" />
+      </mat-form-field>
+
+      <!-- Description -->
+      <mat-form-field class="doublecol">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="5"
+          maxlength="140"
+        ></textarea>
+        <mat-hint align="end">{{ form.value.description.length }} / 140</mat-hint>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <mat-progress-bar mode="indeterminate" *ngIf="vm.loading"></mat-progress-bar>
+  <!-- Actions -->
+  <div [ngClass]="isFormLoading(vm.loading)" mat-dialog-actions>
+    <!-- Remove image -->
+    <div class="q">
+      <button *ngIf="isPreviewVisible()" mat-button color="warn">Remove img</button>
+    </div>
+
+    <!-- Close form -->
+    <button mat-flat-button (click)="onCancelClick()">Close</button>
+
+    <!-- Save -->
+    <button
+      mat-flat-button
+      color="primary"
+      [disabled]="isSaveBttnDisabled()"
+      (click)="onSaveClick()"
+    >
+      Save
+    </button>
+  </div>
+</ng-container>
