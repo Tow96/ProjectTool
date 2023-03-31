@@ -51,7 +51,9 @@
   <div [ngClass]="isFormLoading(vm.loading)" mat-dialog-actions>
     <!-- Remove image -->
     <div class="q">
-      <button *ngIf="isPreviewVisible()" mat-button color="warn">Remove img</button>
+      <button *ngIf="isPreviewVisible()" mat-button color="warn" (click)="onRemoveImageClick()">
+        Remove img
+      </button>
     </div>
 
     <!-- Close form -->

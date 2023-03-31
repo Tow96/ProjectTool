@@ -39,6 +39,7 @@ export class ProjectFormComponent implements OnInit {
   file?: File;
   fileUrl?: string;
   form: FormGroup;
+  removeImg = false;
 
   vm$?: Observable<ProjectFormViewModel>;
 
@@ -70,6 +71,7 @@ export class ProjectFormComponent implements OnInit {
       const values = this.form.value;
       if (values.name !== this.data.name) changes.name = values.name;
       if (values.description !== this.data.description) changes.description = values.description;
+      if (this.removeImg) changes.removeImg = 'remove';
     }
 
     return changes;
@@ -85,12 +87,14 @@ export class ProjectFormComponent implements OnInit {
     }
   }
 
+  // Get functions -----------------------------------------------------------------
   getPreviewUrl(): string {
     if (this.fileUrl) return this.fileUrl;
 
     return `${environment.imageUrl}/${this.data.imageLocation}`;
   }
 
+  // Is functions ------------------------------------------------------------------
   isFormLoading(loading: boolean): Record<string, boolean> {
     return {
       project__form__loading: loading,
@@ -102,15 +106,22 @@ export class ProjectFormComponent implements OnInit {
   }
 
   isPreviewVisible(): boolean {
-    return this.file !== undefined || this.data.imageLocation !== null;
+    return !this.removeImg && (this.file !== undefined || this.data.imageLocation !== null);
   }
 
+  // On functions ------------------------------------------------------------------
   onCancelClick(): void {
     this.dialogRef.close();
   }
 
   onFormSubmit(): void {
     this.validateAndSave();
+  }
+
+  onRemoveImageClick(): void {
+    this.file = undefined;
+    this.fileUrl = undefined;
+    this.removeImg = true;
   }
 
   onSaveClick(): void {
@@ -128,6 +139,7 @@ export class ProjectFormComponent implements OnInit {
       }
 
       this.file = inputEvent.files[0];
+      this.removeImg = false;
 
       const reader = new FileReader();
       reader.readAsDataURL(this.file);
