@@ -1,6 +1,6 @@
 <ng-container *ngIf="vm$ | async as vm">
   <!-- Title -->
-  <h3 mat-dialog-title>Edit Project</h3>
+  <h3 mat-dialog-title>{{ title }}</h3>
 
   <!-- Content -->
   <form
@@ -51,8 +51,11 @@
   <div [ngClass]="isFormLoading(vm.loading)" mat-dialog-actions>
     <!-- Remove image -->
     <div class="q">
+      <button *ngIf="isDeleteVisible()" mat-button color="warn" (click)="onDeleteProjectClick()">
+        <mat-icon>delete</mat-icon>Delete Project
+      </button>
       <button *ngIf="isPreviewVisible()" mat-button color="warn" (click)="onRemoveImageClick()">
-        Remove img
+        <mat-icon>broken_image</mat-icon>Remove img
       </button>
     </div>
 
@@ -66,7 +69,7 @@
       [disabled]="isSaveBttnDisabled()"
       (click)="onSaveClick()"
     >
-      Save
+      <mat-icon>save</mat-icon> Save
     </button>
   </div>
 </ng-container>

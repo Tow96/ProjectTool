@@ -15,10 +15,12 @@ import { MatDialogRef } from '@angular/material/dialog';
 // Actions
 import { ProjectActions, ProjectViewModels } from '../../data';
 // Models
-import { EditProject, Project, ProjectStatus } from '@pt/models';
+import { CreateProject, EditProject, Project, ProjectStatus } from '@pt/models';
 import { Observable } from 'rxjs';
 import { ProjectFormViewModel } from '../../utils';
 import { environment } from '../../../../environments/environment';
+import { MatIconModule } from '@angular/material/icon';
+import { ModalService } from '../../../core';
 
 @Component({
   selector: 'pt-project-form',
@@ -33,6 +35,7 @@ import { environment } from '../../../../environments/environment';
     MatInputModule,
     ReactiveFormsModule,
     MatProgressBarModule,
+    MatIconModule,
   ],
 })
 export class ProjectFormComponent implements OnInit {
@@ -40,6 +43,7 @@ export class ProjectFormComponent implements OnInit {
   fileUrl?: string;
   form: FormGroup;
   removeImg = false;
+  title = 'Edit Project';
 
   vm$?: Observable<ProjectFormViewModel>;
 
@@ -47,17 +51,17 @@ export class ProjectFormComponent implements OnInit {
     private readonly store: Store,
     private readonly fb: FormBuilder,
     private readonly dialogRef: MatDialogRef<ProjectFormComponent>,
+    private readonly modalService: ModalService,
     @Inject(MAT_DIALOG_DATA) public data: Project
   ) {
     this.form = fb.group({
       name: fb.control(data.name, [Validators.required]),
       location: fb.control({ value: data.location, disabled: true }, [Validators.required]),
-      description: fb.control(data.description, [Validators.maxLength(140)]),
+      description: fb.control(data.description || '', [Validators.maxLength(140)]),
     });
 
     if (this.data.status === ProjectStatus.UNREGISTERED) {
-      this.dialogRef.close();
-      throw new Error('Adding unregistered projects is currently not supported');
+      this.title = 'Add Project';
     }
   }
 
@@ -78,12 +82,18 @@ export class ProjectFormComponent implements OnInit {
   }
 
   private validateAndSave(): void {
-    const changes = this.getChanges();
+    if (this.form.invalid) return;
 
-    if (Object.keys(changes).length > 0 || this.file) {
-      this.store.dispatch(
-        ProjectActions.updateProject({ id: this.data.id, changes, img: this.file })
-      );
+    if (this.data.status == ProjectStatus.UNREGISTERED) {
+      const newProject: CreateProject = this.form.getRawValue();
+      this.store.dispatch(ProjectActions.createProject({ project: newProject, img: this.file }));
+    } else {
+      const changes = this.getChanges();
+      if (Object.keys(changes).length > 0 || this.file) {
+        this.store.dispatch(
+          ProjectActions.updateProject({ id: this.data.id, changes, img: this.file })
+        );
+      }
     }
   }
 
@@ -95,6 +105,10 @@ export class ProjectFormComponent implements OnInit {
   }
 
   // Is functions ------------------------------------------------------------------
+  isDeleteVisible(): boolean {
+    return this.data.status !== ProjectStatus.UNREGISTERED;
+  }
+
   isFormLoading(loading: boolean): Record<string, boolean> {
     return {
       project__form__loading: loading,
@@ -106,12 +120,24 @@ export class ProjectFormComponent implements OnInit {
   }
 
   isPreviewVisible(): boolean {
-    return !this.removeImg && (this.file !== undefined || this.data.imageLocation !== null);
+    return (
+      !this.removeImg &&
+      (this.file !== undefined ||
+        (this.data.imageLocation !== null && this.data.imageLocation !== undefined))
+    );
   }
 
   // On functions ------------------------------------------------------------------
   onCancelClick(): void {
     this.dialogRef.close();
+  }
+
+  onDeleteProjectClick(): void {
+    this.modalService.openDialog(
+      `Are you sure you want to remove project: ${this.data.name}?`,
+      'Delete project',
+      ProjectActions.deleteProject({ id: this.data.id })
+    );
   }
 
   onFormSubmit(): void {

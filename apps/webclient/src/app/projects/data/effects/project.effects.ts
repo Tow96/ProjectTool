@@ -21,16 +21,32 @@ export class ProjectEffects {
     private readonly actions$: Actions,
     private readonly store: Store,
     private readonly api: ProjectApiService,
-    private readonly dialogs: MatDialog
+    private readonly dialog: MatDialog
   ) {
-    this.helpers = new EffectHelpers(store, api, dialogs);
+    this.helpers = new EffectHelpers(store, api, dialog);
   }
 
   // Effects ------------------------------------------------------
+  createProjectEffect = createEffect(() => this.createProject$());
+  deleteProjectEffect = createEffect(() => this.deleteProject$());
   loadProjectsEffect = createEffect(() => this.loadProjects$());
   updateProjectEffect = createEffect(() => this.updateProject$());
 
   // Pipes ----------------------------------------------------
+  private createProject$(): Observable<Action> {
+    return this.actions$.pipe(
+      ofType(ProjectActions.createProject),
+      switchMap((action) => this.helpers.createProject$(action.project, action.img))
+    );
+  }
+
+  private deleteProject$(): Observable<Action> {
+    return this.actions$.pipe(
+      ofType(ProjectActions.deleteProject),
+      switchMap((action) => this.helpers.deleteProject$(action.id))
+    );
+  }
+
   private loadProjects$(): Observable<Action> {
     return this.actions$.pipe(
       ofType(ProjectActions.loadProjects),

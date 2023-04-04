@@ -40,27 +40,56 @@ export const reducer = createReducer(
     ...state,
     loaded: true,
   })),
-  // Set projects
+  // (Create) Add project
+  on(ProjectActions.createProjectSuccess, (state, action) => addProject(state, action)),
+  // (Read) Set projects
   on(ProjectActions.loadProjectsSuccess, (state, action) => setProjects(state, action)),
+  // (Update) a project
+  on(ProjectActions.updateProjectSuccess, (state, action) =>
+    adapter.updateOne(action.project, state)
+  ),
+  // (Delete) remove project
+  on(ProjectActions.deleteProjectSuccess, (state, action) => adapter.removeOne(action.id, state)),
   // Update search form
   on(ProjectActions.updateSearchForm, (state, action) => ({
     ...state,
     searchInput: action.searchInput,
   })),
-  // Update a project
-  on(ProjectActions.updateProjectSuccess, (state, action) =>
-    adapter.updateOne(action.project, state)
-  ),
   // Set form loading
-  on(ProjectActions.updateProject, (state) => ({ ...state, formLoading: true })),
+  on(
+    ProjectActions.createProject,
+    ProjectActions.updateProject,
+    ProjectActions.deleteProject,
+    (state) => ({
+      ...state,
+      formLoading: true,
+    })
+  ),
   // Stop form loading
-  on(ProjectActions.updateProjectFailure, ProjectActions.updateProjectSuccess, (state) => ({
-    ...state,
-    formLoading: false,
-  }))
+  on(
+    ProjectActions.createProjectFailure,
+    ProjectActions.createProjectSuccess,
+    ProjectActions.deleteProjectFailure,
+    ProjectActions.deleteProjectSuccess,
+    ProjectActions.updateProjectFailure,
+    ProjectActions.updateProjectSuccess,
+    (state) => ({
+      ...state,
+      formLoading: false,
+    })
+  )
 );
 
 export const { selectIds, selectEntities, selectAll, selectTotal } = adapter.getSelectors();
+
+const addProject = (state: State, { project }: { project: Project }): State => {
+  let newState = state;
+  const prevProject = selectAll(state).find((x) => x.location === project.location);
+
+  if (prevProject) newState = adapter.removeOne(prevProject.id, newState);
+
+  return adapter.addOne(project, newState);
+};
 
 const setProjects = (state: State, action: { projects: Project[] }): State => {
   const newState = adapter.setAll(action.projects, state);

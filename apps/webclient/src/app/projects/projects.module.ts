@@ -8,6 +8,7 @@ import { ProjectsRouting } from './projects.routing';
 // Data access
 import { fromProjects, ProjectApiService, ProjectEffects, ToastEffects } from './data';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ModalService } from '../core';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     EffectsModule.forFeature([ProjectEffects, ToastEffects]),
     MatDialogModule,
   ],
-  providers: [ProjectApiService],
+  providers: [ProjectApiService, ModalService],
 })
 export class ProjectsModule {}
