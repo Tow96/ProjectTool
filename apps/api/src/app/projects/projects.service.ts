@@ -47,7 +47,7 @@ export class ProjectService {
 
     this.logger.pidLog(pid, `Created project: ${newProject.name} with id: ${newProject.id}`);
 
-    return newProject;
+    return this.getProjectStatus(newProject);
   }
 
   async deleteProject(pid: string, id: number): Promise<DeleteResult> {
