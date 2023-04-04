@@ -7,7 +7,7 @@ export class ToastService {
   constructor(private readonly matSnackBar: MatSnackBar) {}
 
   private openSnackBar(message: string, style = 'basic-snackbar') {
-    this.matSnackBar.open(message, undefined, {
+    this.matSnackBar.open(message, 'X', {
       horizontalPosition: 'right',
       verticalPosition: 'top',
       duration: 3000,
