@@ -4,4 +4,5 @@ export enum ProjectStatus {
   ARCHIVED = 2,
   BOTH = 3,
   UNREGISTERED = 4,
+  NEW = 5,
 }

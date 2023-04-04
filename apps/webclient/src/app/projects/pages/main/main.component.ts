@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 // NGRX
 import { ProjectActions, ProjectViewModels } from '../../data';
 // Models
-import { Project } from '@pt/models';
+import { Project, ProjectStatus } from '@pt/models';
 // Misc.
 import { ProjectFormComponent } from '../../components';
 import { MainViewModel, ScreenSizeColumns } from '../../utils';
@@ -82,11 +82,22 @@ export class MainComponent implements OnInit {
   }
 
   // on functions ------------------------------------------
-  onCardDetails(project: Project | null) {
+  onAddProjectClick(): void {
+    this.dialog.open(ProjectFormComponent, {
+      data: {
+        description: '',
+        location: '',
+        name: '',
+        status: ProjectStatus.NEW,
+      },
+    });
+  }
+
+  onCardDetails(project: Project | null): void {
     this.dialog.open(ProjectFormComponent, { data: project });
   }
 
-  onInputKeyUp(form: FormGroup) {
+  onInputKeyUp(form: FormGroup): void {
     const values = form.value;
 
     this.store.dispatch(
@@ -97,7 +108,7 @@ export class MainComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize() {
+  onResize(): void {
     this.rowHeight = this.getRowHeight();
 
     const newSize = this.getScreenSize();

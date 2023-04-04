@@ -56,11 +56,14 @@ export class ProjectFormComponent implements OnInit {
   ) {
     this.form = fb.group({
       name: fb.control(data.name, [Validators.required]),
-      location: fb.control({ value: data.location, disabled: true }, [Validators.required]),
+      location: fb.control(
+        { value: data.location, disabled: this.data.status !== ProjectStatus.NEW },
+        [Validators.required]
+      ),
       description: fb.control(data.description || '', [Validators.maxLength(140)]),
     });
 
-    if (this.data.status === ProjectStatus.UNREGISTERED) {
+    if (this.data.status === ProjectStatus.NEW || this.data.status === ProjectStatus.UNREGISTERED) {
       this.title = 'Add Project';
     }
   }
@@ -84,7 +87,7 @@ export class ProjectFormComponent implements OnInit {
   private validateAndSave(): void {
     if (this.form.invalid) return;
 
-    if (this.data.status == ProjectStatus.UNREGISTERED) {
+    if (this.data.status === ProjectStatus.NEW || this.data.status === ProjectStatus.UNREGISTERED) {
       const newProject: CreateProject = this.form.getRawValue();
       this.store.dispatch(ProjectActions.createProject({ project: newProject, img: this.file }));
     } else {
@@ -106,7 +109,9 @@ export class ProjectFormComponent implements OnInit {
 
   // Is functions ------------------------------------------------------------------
   isDeleteVisible(): boolean {
-    return this.data.status !== ProjectStatus.UNREGISTERED;
+    return !(
+      this.data.status === ProjectStatus.NEW || this.data.status === ProjectStatus.UNREGISTERED
+    );
   }
 
   isFormLoading(loading: boolean): Record<string, boolean> {
